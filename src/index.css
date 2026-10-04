@@ -1,0 +1,213 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource/eb-garamond/latin-400.css";
+@import "@fontsource/eb-garamond/latin-500.css";
+@import "@fontsource/eb-garamond/latin-400-italic.css";
+
+/* Streamdown (réponses de l'agent en markdown) */
+@source "../node_modules/streamdown/dist/*.js";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   Meridiem · Olympe
+   Ivoire et encre, titres en EB Garamond, interface en Geist,
+   terracotta réservé à l'action principale et aux repères.
+   Les composants shadcn/ui lisent ces variables telles quelles.
+   ============================================================ */
+
+@theme inline {
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --font-heading: "EB Garamond", Georgia, serif;
+  --font-serif: "EB Garamond", Georgia, serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-wait: var(--wait);
+  --color-crit: var(--crit);
+  --color-info: var(--info);
+  --color-ivory: var(--ivory);
+  --color-sand: var(--sand);
+  --color-sepia: var(--sepia);
+  --color-ink: var(--ink);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --shadow-soft: 0 1px 2px rgb(60 40 20 / 0.04), 0 4px 16px rgb(60 40 20 / 0.05);
+  --shadow-lift: 0 2px 6px rgb(60 40 20 / 0.06), 0 16px 40px rgb(60 40 20 / 0.09);
+}
+
+:root {
+  color-scheme: light;
+  /* Palette de marque */
+  --ivory: #F6F3ED;
+  --ink: #1C1B1A;
+  --sand: #E3CDB3;
+  --sepia: #4A2C18;
+
+  /* Rôles shadcn */
+  --background: #FBF9F5;
+  --foreground: #1C1B1A;
+  --card: #FFFFFF;
+  --card-foreground: #1C1B1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1B1A;
+  --primary: #AA4F13;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F2EDE5;
+  --secondary-foreground: #1C1B1A;
+  --muted: #F2EDE5;
+  --muted-foreground: #6B6764;
+  --accent: #EFE9DF;
+  --accent-foreground: #1C1B1A;
+  --destructive: #B3261E;
+  --border: #E8E2D8;
+  --input: #E0D9CD;
+  --ring: #C98A5E;
+  /* Graphiques : ordre fixe, validé au script dataviz (04/10/2026) */
+  --chart-1: #AA4F13;
+  --chart-2: #3F6FB0;
+  --chart-3: #C2861A;
+  --chart-4: #0E8C7C;
+  --chart-5: #8E4F8A;
+  --radius: 0.625rem;
+
+  --sidebar: #F3EFE8;
+  --sidebar-foreground: #3D3A36;
+  --sidebar-primary: #1C1B1A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EAE4D9;
+  --sidebar-accent-foreground: #1C1B1A;
+  --sidebar-border: #E6DFD3;
+  --sidebar-ring: #C98A5E;
+
+  /* Statuts : toujours doublés d'un mot à l'écran */
+  --ok: #2F7A4A;
+  --warn: #9A5D0C;
+  --wait: #55499F;
+  --crit: #B3261E;
+  --info: #2B6099;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Étiquette en capitales (rubriques, colonnes) */
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-muted-foreground;
+  }
+  /* Grille de filets à repères en croix (Olympus) */
+  .hairline-grid {
+    @apply grid border-t border-l border-border;
+  }
+  .hairline-grid > * {
+    @apply relative border-r border-b border-border;
+  }
+  .hairline-grid > *::after {
+    content: "";
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 9px;
+    height: 9px;
+    background:
+      linear-gradient(var(--ring), var(--ring)) center / 9px 1px no-repeat,
+      linear-gradient(var(--ring), var(--ring)) center / 1px 9px no-repeat;
+    opacity: 0.7;
+    z-index: 1;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Graphiques : pas de cadre de focus au clic (Recharts rend la zone focusable), anneau discret au clavier seulement */
+.recharts-wrapper,
+.recharts-wrapper * {
+  outline: none !important;
+}
+.recharts-wrapper:focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* Entrées douces : chaque enfant d'une page ou d'une grille monte en cascade */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.stagger > * {
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.stagger > *:nth-child(2) { animation-delay: 0.05s; }
+.stagger > *:nth-child(3) { animation-delay: 0.1s; }
+.stagger > *:nth-child(4) { animation-delay: 0.15s; }
+.stagger > *:nth-child(5) { animation-delay: 0.2s; }
+.stagger > *:nth-child(n + 6) { animation-delay: 0.25s; }
+[data-slot="tabs-content"][data-state="active"] {
+  animation: rise 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

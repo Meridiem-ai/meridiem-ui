@@ -1,0 +1,163 @@
+{
+  "$description": "Meridiem · Olympe, jetons au format Design Tokens (DTCG)",
+  "color": {
+    "ivory": {
+      "$type": "color",
+      "$value": "#F6F3ED"
+    },
+    "ink": {
+      "$type": "color",
+      "$value": "#1C1B1A"
+    },
+    "sand": {
+      "$type": "color",
+      "$value": "#E3CDB3"
+    },
+    "sepia": {
+      "$type": "color",
+      "$value": "#4A2C18"
+    },
+    "background": {
+      "$type": "color",
+      "$value": "#FBF9F5"
+    },
+    "sidebar": {
+      "$type": "color",
+      "$value": "#F3EFE8"
+    },
+    "card": {
+      "$type": "color",
+      "$value": "#FFFFFF"
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "#1C1B1A"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "#F2EDE5"
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "#6B6764"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "#EFE9DF"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "#E8E2D8"
+    },
+    "input": {
+      "$type": "color",
+      "$value": "#E0D9CD"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "#C98A5E"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "#AA4F13"
+    },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "#8A3F0F"
+    },
+    "destructive": {
+      "$type": "color",
+      "$value": "#B3261E"
+    },
+    "status-ok": {
+      "$type": "color",
+      "$value": "#2F7A4A"
+    },
+    "status-warn": {
+      "$type": "color",
+      "$value": "#9A5D0C"
+    },
+    "status-wait": {
+      "$type": "color",
+      "$value": "#55499F"
+    },
+    "status-crit": {
+      "$type": "color",
+      "$value": "#B3261E"
+    },
+    "status-info": {
+      "$type": "color",
+      "$value": "#2B6099"
+    },
+    "chart-1": {
+      "$type": "color",
+      "$value": "#AA4F13"
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": "#3F6FB0"
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": "#C2861A"
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": "#0E8C7C"
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": "#8E4F8A"
+    }
+  },
+  "font": {
+    "heading": {
+      "$type": "fontFamily",
+      "$value": [
+        "EB Garamond",
+        "Georgia",
+        "serif"
+      ]
+    },
+    "sans": {
+      "$type": "fontFamily",
+      "$value": [
+        "Geist",
+        "system-ui",
+        "sans-serif"
+      ]
+    },
+    "mono": {
+      "$type": "fontFamily",
+      "$value": [
+        "Geist Mono",
+        "ui-monospace",
+        "monospace"
+      ]
+    }
+  },
+  "radius": {
+    "sm": {
+      "$type": "dimension",
+      "$value": "6px"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "10px"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "14px"
+    }
+  },
+  "shadow": {
+    "soft": {
+      "$type": "shadow",
+      "$value": "0 1px 2px rgb(60 40 20 / 0.04), 0 4px 16px rgb(60 40 20 / 0.05)"
+    },
+    "lift": {
+      "$type": "shadow",
+      "$value": "0 2px 6px rgb(60 40 20 / 0.06), 0 16px 40px rgb(60 40 20 / 0.09)"
+    }
+  }
+}

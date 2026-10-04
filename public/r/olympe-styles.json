@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "olympe-styles",
+  "title": "Styles Olympe",
+  "description": "Imports de polices et utilitaires (eyebrow, grille de filets, cascade d'entrée, focus des graphiques). À importer dans le CSS principal.",
+  "files": [
+    {
+      "path": "registry/olympe.css",
+      "content": "/* Meridiem · Olympe : polices et utilitaires. À importer dans le CSS principal : @import \"./styles/olympe.css\"; */\n@import \"@fontsource-variable/geist\";\n@import \"@fontsource-variable/geist-mono\";\n@import \"@fontsource/eb-garamond/latin-400.css\";\n@import \"@fontsource/eb-garamond/latin-500.css\";\n@import \"@fontsource/eb-garamond/latin-400-italic.css\";\n\n@layer components {\n  /* Étiquette en capitales (rubriques, colonnes) */\n  .eyebrow {\n    @apply font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-muted-foreground;\n  }\n  /* Grille de filets à repères en croix (Olympus) */\n  .hairline-grid {\n    @apply grid border-t border-l border-border;\n  }\n  .hairline-grid > * {\n    @apply relative border-r border-b border-border;\n  }\n  .hairline-grid > *::after {\n    content: \"\";\n    position: absolute;\n    right: -5px;\n    bottom: -5px;\n    width: 9px;\n    height: 9px;\n    background:\n      linear-gradient(var(--ring), var(--ring)) center / 9px 1px no-repeat,\n      linear-gradient(var(--ring), var(--ring)) center / 1px 9px no-repeat;\n    opacity: 0.7;\n    z-index: 1;\n  }\n  .num {\n    font-variant-numeric: tabular-nums;\n  }\n}\n\n/* Graphiques : pas de cadre de focus au clic (Recharts rend la zone focusable), anneau discret au clavier seulement */\n.recharts-wrapper,\n.recharts-wrapper * {\n  outline: none !important;\n}\n.recharts-wrapper:focus-visible {\n  outline: 2px solid var(--ring) !important;\n  outline-offset: 4px;\n  border-radius: 8px;\n}\n\n/* Entrées douces : chaque enfant d'une page ou d'une grille monte en cascade */\n@keyframes rise {\n  from { opacity: 0; transform: translateY(10px); }\n  to { opacity: 1; transform: none; }\n}\n.stagger > * {\n  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;\n}\n.stagger > *:nth-child(2) { animation-delay: 0.05s; }\n.stagger > *:nth-child(3) { animation-delay: 0.1s; }\n.stagger > *:nth-child(4) { animation-delay: 0.15s; }\n.stagger > *:nth-child(5) { animation-delay: 0.2s; }\n.stagger > *:nth-child(n + 6) { animation-delay: 0.25s; }\n[data-slot=\"tabs-content\"][data-state=\"active\"] {\n  animation: rise 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    animation-duration: 0.01ms !important;\n    transition-duration: 0.01ms !important;\n  }\n}\n",
+      "type": "registry:file",
+      "target": "src/styles/olympe.css"
+    }
+  ],
+  "type": "registry:file"
+}

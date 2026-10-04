@@ -1,0 +1,129 @@
+/* Meridiem · Olympe, version sans framework (HTML, CSS et JS simples : Command Center, outils internes, pages statiques).
+   Même rendu que la librairie React (shadcn/ui habillé Olympe). Préfixe de classes : .m-
+   Polices : EB Garamond (titres), Geist (interface), Geist Mono (étiquettes), servies par Google Fonts. */
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Marque */
+  --m-ivory: #F6F3ED;
+  --m-ink: #1C1B1A;
+  --m-sand: #E3CDB3;
+  --m-sepia: #4A2C18;
+  /* Rôles */
+  --m-bg: #FBF9F5;
+  --m-sidebar: #F3EFE8;
+  --m-card: #FFFFFF;
+  --m-fg: #1C1B1A;
+  --m-muted: #F2EDE5;
+  --m-muted-fg: #6B6764;
+  --m-accent: #EFE9DF;
+  --m-sidebar-accent: #EAE4D9;
+  --m-border: #E8E2D8;
+  --m-input: #E0D9CD;
+  --m-ring: #C98A5E;
+  --m-primary: #AA4F13;
+  --m-primary-hover: #8A3F0F;
+  --m-primary-fg: #FFFFFF;
+  --m-destructive: #B3261E;
+  /* Statuts : toujours accompagnés d'un mot */
+  --m-ok: #2F7A4A;
+  --m-warn: #9A5D0C;
+  --m-wait: #55499F;
+  --m-crit: #B3261E;
+  --m-info: #2B6099;
+  /* Graphiques, ordre fixe (palette validée pour le daltonisme) */
+  --m-chart-1: #AA4F13;
+  --m-chart-2: #3F6FB0;
+  --m-chart-3: #C2861A;
+  --m-chart-4: #0E8C7C;
+  --m-chart-5: #8E4F8A;
+  /* Formes */
+  --m-radius: 10px;
+  --m-radius-sm: 6px;
+  --m-radius-lg: 14px;
+  --m-shadow: 0 1px 2px rgb(60 40 20 / 0.04), 0 4px 16px rgb(60 40 20 / 0.05);
+  --m-shadow-lift: 0 2px 6px rgb(60 40 20 / 0.06), 0 16px 40px rgb(60 40 20 / 0.09);
+  /* Typo */
+  --m-font-heading: "EB Garamond", Georgia, serif;
+  --m-font-sans: "Geist", system-ui, -apple-system, sans-serif;
+  --m-font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+}
+
+.m-body { margin: 0; background: var(--m-bg); color: var(--m-fg); font: 14px/1.5 var(--m-font-sans); -webkit-font-smoothing: antialiased; }
+.m-h1, .m-h2, .m-h3 { font-family: var(--m-font-heading); font-weight: 400; letter-spacing: -0.01em; margin: 0; line-height: 1.15; }
+.m-h1 { font-size: 32px; } .m-h2 { font-size: 24px; } .m-h3 { font-size: 18px; font-weight: 500; }
+.m-eyebrow { font: 500 11px/1 var(--m-font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--m-muted-fg); }
+.m-muted { color: var(--m-muted-fg); }
+.m-num { font-variant-numeric: tabular-nums; }
+.m-mono { font-family: var(--m-font-mono); font-size: 12px; }
+
+/* Boutons : un seul primaire (terracotta) par zone */
+.m-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--m-border); background: var(--m-card); color: var(--m-fg); font: 500 13px/1 var(--m-font-sans); cursor: pointer; white-space: nowrap; text-decoration: none; transition: background .15s, border-color .15s, box-shadow .15s; }
+.m-btn:hover { background: var(--m-accent); }
+.m-btn:focus-visible { outline: 2px solid var(--m-ring); outline-offset: 2px; }
+.m-btn:disabled { opacity: .5; cursor: not-allowed; }
+.m-btn svg { width: 16px; height: 16px; flex: none; }
+.m-btn-primary { background: var(--m-primary); border-color: var(--m-primary); color: var(--m-primary-fg); }
+.m-btn-primary:hover { background: var(--m-primary-hover); border-color: var(--m-primary-hover); }
+.m-btn-ghost { background: transparent; border-color: transparent; color: var(--m-muted-fg); }
+.m-btn-ghost:hover { background: var(--m-accent); color: var(--m-fg); }
+.m-btn-destructive { background: var(--m-destructive); border-color: var(--m-destructive); color: #fff; }
+.m-btn-sm { height: 28px; padding: 0 10px; font-size: 12.5px; }
+.m-btn-icon { width: 32px; padding: 0; }
+
+/* Badges de statut : pastille + mot */
+.m-badge { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--st, var(--m-muted-fg)) 22%, transparent); background: color-mix(in srgb, var(--st, var(--m-muted-fg)) 8%, transparent); color: var(--st, var(--m-muted-fg)); font: 500 12px/1 var(--m-font-sans); white-space: nowrap; }
+.m-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.m-badge.is-ok { --st: var(--m-ok); } .m-badge.is-warn { --st: var(--m-warn); } .m-badge.is-wait { --st: var(--m-wait); } .m-badge.is-crit { --st: var(--m-crit); } .m-badge.is-info { --st: var(--m-info); }
+.m-count { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--m-muted); color: var(--m-muted-fg); font: 500 11px/1 var(--m-font-mono); }
+
+/* Cartes */
+.m-card { background: var(--m-card); border: 1px solid var(--m-border); border-radius: var(--m-radius-lg); box-shadow: var(--m-shadow); }
+.m-card-hover { transition: box-shadow .3s, translate .3s; }
+.m-card-hover:hover { box-shadow: var(--m-shadow-lift); translate: 0 -2px; }
+.m-card-head { padding: 18px 20px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.m-card-title { font: 500 18px/1.2 var(--m-font-heading); margin: 0; }
+.m-card-desc { font-size: 13px; color: var(--m-muted-fg); margin: 4px 0 0; }
+.m-card-body { padding: 16px 20px 20px; }
+.m-kpi-value { font: 400 32px/1 var(--m-font-heading); font-variant-numeric: tabular-nums; }
+
+/* Champs */
+.m-input, .m-select, .m-textarea { width: 100%; box-sizing: border-box; height: 32px; padding: 0 10px; border: 1px solid var(--m-input); border-radius: 8px; background: var(--m-card); color: var(--m-fg); font: 14px var(--m-font-sans); transition: border-color .15s, box-shadow .15s; }
+.m-textarea { height: auto; min-height: 72px; padding: 8px 10px; resize: vertical; }
+.m-input:focus, .m-select:focus, .m-textarea:focus { outline: none; border-color: var(--m-ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--m-ring) 25%, transparent); }
+.m-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+.m-help { font-size: 12px; color: var(--m-muted-fg); margin-top: 6px; }
+
+/* Tables */
+.m-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.m-table th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--m-border); font: 500 11px/1 var(--m-font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--m-muted-fg); white-space: nowrap; }
+.m-table td { padding: 11px 14px; border-bottom: 1px solid var(--m-border); vertical-align: middle; }
+.m-table tbody tr { transition: background .12s; }
+.m-table tbody tr:hover { background: color-mix(in srgb, var(--m-fg) 3%, transparent); }
+.m-table tbody tr[aria-selected="true"] { background: var(--m-muted); }
+.m-table td.m-r, .m-table th.m-r { text-align: right; }
+
+/* Onglets (segmentés) */
+.m-tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--m-muted); }
+.m-tabs button { border: 0; background: transparent; padding: 5px 10px; border-radius: 7px; font: 500 13px/1 var(--m-font-sans); color: var(--m-muted-fg); cursor: pointer; }
+.m-tabs button[aria-selected="true"] { background: var(--m-card); color: var(--m-fg); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+
+/* Menu latéral */
+.m-sidebar { background: var(--m-sidebar); border-right: 1px solid var(--m-border); padding: 12px 8px; display: flex; flex-direction: column; gap: 2px; }
+.m-nav-label { padding: 12px 8px 4px; font: 500 11px/1 var(--m-font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--m-muted-fg); }
+.m-nav-item { display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 8px; border-radius: 8px; color: #3D3A36; text-decoration: none; font-size: 14px; cursor: pointer; transition: background .15s, color .15s; }
+.m-nav-item:hover { background: var(--m-sidebar-accent); color: var(--m-fg); }
+.m-nav-item[aria-current="page"], .m-nav-item.is-active { background: var(--m-sidebar-accent); color: var(--m-fg); font-weight: 500; }
+.m-nav-item svg { width: 16px; height: 16px; flex: none; }
+.m-nav-item .m-count { margin-left: auto; background: transparent; }
+
+/* Divers */
+.m-kbd { display: inline-flex; align-items: center; height: 20px; padding: 0 5px; border: 1px solid var(--m-border); border-radius: 4px; background: var(--m-card); font: 11px/1 var(--m-font-mono); color: var(--m-muted-fg); }
+.m-hairline-grid { display: grid; border-top: 1px solid var(--m-border); border-left: 1px solid var(--m-border); }
+.m-hairline-grid > * { border-right: 1px solid var(--m-border); border-bottom: 1px solid var(--m-border); }
+
+/* Entrées douces */
+@keyframes m-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.m-stagger > * { animation: m-rise .5s cubic-bezier(.2, .8, .2, 1) backwards; }
+.m-stagger > *:nth-child(2) { animation-delay: .05s; } .m-stagger > *:nth-child(3) { animation-delay: .1s; } .m-stagger > *:nth-child(4) { animation-delay: .15s; } .m-stagger > *:nth-child(n + 5) { animation-delay: .2s; }
+@media (prefers-reduced-motion: reduce) { .m-stagger > *, .m-card-hover { animation: none !important; transition: none !important; } }

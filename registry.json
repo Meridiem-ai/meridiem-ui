@@ -1,0 +1,109 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "meridiem",
+  "homepage": "https://github.com/Meridiem-ai/meridiem-ui",
+  "items": [
+    {
+      "name": "olympe-theme",
+      "type": "registry:theme",
+      "title": "Thème Olympe",
+      "description": "Couleurs, polices et rayons du design system Meridiem (ivoire, encre, terracotta).",
+      "dependencies": ["@fontsource/eb-garamond", "@fontsource-variable/geist", "@fontsource-variable/geist-mono", "@hugeicons/react", "@hugeicons/core-free-icons", "motion"],
+      "cssVars": {
+        "theme": {
+          "font-sans": "\"Geist Variable\", system-ui, sans-serif",
+          "font-heading": "\"EB Garamond\", Georgia, serif",
+          "font-serif": "\"EB Garamond\", Georgia, serif",
+          "font-mono": "\"Geist Mono Variable\", ui-monospace, monospace",
+          "color-ok": "var(--ok)", "color-warn": "var(--warn)", "color-wait": "var(--wait)", "color-crit": "var(--crit)", "color-info": "var(--info)",
+          "color-ivory": "var(--ivory)", "color-sand": "var(--sand)", "color-sepia": "var(--sepia)", "color-ink": "var(--ink)",
+          "shadow-soft": "0 1px 2px rgb(60 40 20 / 0.04), 0 4px 16px rgb(60 40 20 / 0.05)",
+          "shadow-lift": "0 2px 6px rgb(60 40 20 / 0.06), 0 16px 40px rgb(60 40 20 / 0.09)"
+        },
+        "light": {
+          "ivory": "#F6F3ED", "ink": "#1C1B1A", "sand": "#E3CDB3", "sepia": "#4A2C18",
+          "background": "#FBF9F5", "foreground": "#1C1B1A", "card": "#FFFFFF", "card-foreground": "#1C1B1A", "popover": "#FFFFFF", "popover-foreground": "#1C1B1A",
+          "primary": "#AA4F13", "primary-foreground": "#FFFFFF", "secondary": "#F2EDE5", "secondary-foreground": "#1C1B1A", "muted": "#F2EDE5", "muted-foreground": "#6B6764",
+          "accent": "#EFE9DF", "accent-foreground": "#1C1B1A", "destructive": "#B3261E", "border": "#E8E2D8", "input": "#E0D9CD", "ring": "#C98A5E",
+          "chart-1": "#AA4F13", "chart-2": "#3F6FB0", "chart-3": "#C2861A", "chart-4": "#0E8C7C", "chart-5": "#8E4F8A", "radius": "0.625rem",
+          "sidebar": "#F3EFE8", "sidebar-foreground": "#3D3A36", "sidebar-primary": "#1C1B1A", "sidebar-primary-foreground": "#FFFFFF", "sidebar-accent": "#EAE4D9", "sidebar-accent-foreground": "#1C1B1A", "sidebar-border": "#E6DFD3", "sidebar-ring": "#C98A5E",
+          "ok": "#2F7A4A", "warn": "#9A5D0C", "wait": "#55499F", "crit": "#B3261E", "info": "#2B6099"
+        }
+      }
+    },
+    {
+      "name": "olympe-styles",
+      "type": "registry:file",
+      "title": "Styles Olympe",
+      "description": "Imports de polices et utilitaires (eyebrow, grille de filets, cascade d'entrée, focus des graphiques). À importer dans le CSS principal.",
+      "files": [{ "path": "registry/olympe.css", "type": "registry:file", "target": "src/styles/olympe.css" }]
+    },
+    {
+      "name": "brand",
+      "type": "registry:lib",
+      "title": "Briques de marque",
+      "description": "Icône Hugeicons, ville en points, champ de points, graphique en points, 9 cartes animées, badge de statut, palette des graphiques.",
+      "registryDependencies": ["badge"],
+      "dependencies": ["@hugeicons/react", "@hugeicons/core-free-icons", "motion"],
+      "files": [
+        { "path": "src/components/meridiem/brand.tsx", "type": "registry:component" },
+        { "path": "src/components/meridiem/assets.ts", "type": "registry:lib" },
+        { "path": "src/lib/meridiem/art.js", "type": "registry:lib" }
+      ]
+    },
+    {
+      "name": "kpi-card",
+      "type": "registry:component",
+      "title": "Carte indicateur animée",
+      "registryDependencies": ["card", "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/brand.json"],
+      "files": [{ "path": "src/components/meridiem/kpi-card.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "charts",
+      "type": "registry:component",
+      "title": "Graphiques Olympe",
+      "description": "Aire à deux séries avec période, colonnes tramées, barres empilées, courbe, jauge radiale.",
+      "registryDependencies": ["card", "chart", "toggle-group"],
+      "files": [{ "path": "src/components/meridiem/charts.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "clients-table",
+      "type": "registry:block",
+      "title": "Table de données",
+      "description": "TanStack Table : recherche, tri, sélection avec actions groupées, actions par ligne, pagination.",
+      "dependencies": ["@tanstack/react-table", "sonner"],
+      "registryDependencies": ["table", "checkbox", "button", "input-group", "dropdown-menu", "card", "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/brand.json"],
+      "files": [
+        { "path": "src/components/meridiem/clients-table.tsx", "type": "registry:component" },
+        { "path": "src/components/meridiem/demo-data.ts", "type": "registry:lib" }
+      ]
+    },
+    {
+      "name": "platform",
+      "type": "registry:block",
+      "title": "Plateforme type",
+      "description": "Gabarit complet : sidebar, menu du compte, palette ⌘K, notifications, tableau de bord, demandes, clients, réglages, dialogues et toasts.",
+      "dependencies": ["sonner", "motion"],
+      "registryDependencies": ["sidebar", "breadcrumb", "separator", "button", "avatar", "kbd", "dropdown-menu", "popover", "command", "dialog", "sheet", "accordion", "field", "input", "textarea", "select", "empty", "tabs", "table", "input-group", "alert-dialog", "spinner", "switch", "item", "card", "sonner",
+        "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/kpi-card.json",
+        "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/charts.json",
+        "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/clients-table.json"],
+      "files": [
+        { "path": "src/components/meridiem/platform/Platform.tsx", "type": "registry:component" },
+        { "path": "src/components/meridiem/platform/Dashboard.tsx", "type": "registry:component" },
+        { "path": "src/components/meridiem/platform/Requests.tsx", "type": "registry:component" },
+        { "path": "src/components/meridiem/platform/Clients.tsx", "type": "registry:component" },
+        { "path": "src/components/meridiem/platform/Settings.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "landing",
+      "type": "registry:block",
+      "title": "Micro landing Meridiem",
+      "description": "Héros sur la ville en points, grille de filets, bloc final, pied de page, prise de rendez-vous.",
+      "dependencies": ["sonner", "react-day-picker"],
+      "registryDependencies": ["button", "calendar", "dialog", "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/brand.json"],
+      "files": [{ "path": "src/components/meridiem/landing.tsx", "type": "registry:component" }]
+    }
+  ]
+}

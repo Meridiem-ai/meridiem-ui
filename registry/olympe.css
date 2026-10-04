@@ -1,0 +1,73 @@
+/* Meridiem · Olympe : polices et utilitaires. À importer dans le CSS principal : @import "./styles/olympe.css"; */
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource/eb-garamond/latin-400.css";
+@import "@fontsource/eb-garamond/latin-500.css";
+@import "@fontsource/eb-garamond/latin-400-italic.css";
+
+@layer components {
+  /* Étiquette en capitales (rubriques, colonnes) */
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-muted-foreground;
+  }
+  /* Grille de filets à repères en croix (Olympus) */
+  .hairline-grid {
+    @apply grid border-t border-l border-border;
+  }
+  .hairline-grid > * {
+    @apply relative border-r border-b border-border;
+  }
+  .hairline-grid > *::after {
+    content: "";
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 9px;
+    height: 9px;
+    background:
+      linear-gradient(var(--ring), var(--ring)) center / 9px 1px no-repeat,
+      linear-gradient(var(--ring), var(--ring)) center / 1px 9px no-repeat;
+    opacity: 0.7;
+    z-index: 1;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Graphiques : pas de cadre de focus au clic (Recharts rend la zone focusable), anneau discret au clavier seulement */
+.recharts-wrapper,
+.recharts-wrapper * {
+  outline: none !important;
+}
+.recharts-wrapper:focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* Entrées douces : chaque enfant d'une page ou d'une grille monte en cascade */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.stagger > * {
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.stagger > *:nth-child(2) { animation-delay: 0.05s; }
+.stagger > *:nth-child(3) { animation-delay: 0.1s; }
+.stagger > *:nth-child(4) { animation-delay: 0.15s; }
+.stagger > *:nth-child(5) { animation-delay: 0.2s; }
+.stagger > *:nth-child(n + 6) { animation-delay: 0.25s; }
+[data-slot="tabs-content"][data-state="active"] {
+  animation: rise 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

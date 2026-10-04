@@ -19,7 +19,7 @@
 <div class="shell">
   <aside class="m-sidebar">
     <div class="m-sb-ws"><span class="m-sb-mark"><img src="../public/assets/meridiem-icone.png" alt=""></span><div><b>Command Center</b><small>Meridiem</small></div></div>
-    <div class="m-sb-search" onclick="MUI.toast('Recherche', { description: 'Palette ⌘K (démo)' })"><i data-icon="Search01"></i>Rechercher<span class="m-kbd">⌘K</span></div>
+    <div class="m-sb-search" onclick="pal.open()"><i data-icon="Search01"></i>Rechercher<span class="m-kbd">⌘K</span></div>
     <nav class="nav" id="nav">
       <div class="m-nav-label">Pilotage</div>
       <a class="m-nav-item is-active"><i data-icon="DashboardSquare01"></i>Tableau de bord</a>
@@ -76,6 +76,10 @@
   MUI.donut(document.getElementById("donut"), { total: "184 k€", sub: "pipeline actif", format: function (v) { return Math.round(v / 1000) + " k€"; }, segments: [{ label: "Découverte", value: 52000 }, { label: "Offre et négociation", value: 88000 }, { label: "Gagné", value: 44000 }] });
   MUI.bind(document);
   MUI.navPill(document.getElementById("nav"));
+  var pal = MUI.palette({ placeholder: "Rechercher une page ou une action", hotkey: true, items: [
+    { group: "Pages", label: "Tableau de bord", icon: "DashboardSquare01" }, { group: "Pages", label: "Tâches", icon: "Kanban", hint: "26" },
+    { group: "Pages", label: "Messages", icon: "Message01" }, { group: "Pages", label: "CRM", icon: "Analytics01" }, { group: "Pages", label: "Projets", icon: "Folder01" },
+    { group: "Actions", label: "Nouvelle tâche", icon: "Add01", run: function () { MUI.toast("Nouvelle tâche", { description: "Formulaire (démo)" }); } } ] });
   MUI.menu(document.getElementById("userbtn"), document.getElementById("usermenu"), { side: "top" });
   document.querySelectorAll("#nav .m-nav-item").forEach(function (a) { a.addEventListener("click", function () { document.querySelectorAll("#nav .m-nav-item").forEach(function (x) { x.classList.toggle("is-active", x === a); }); main.classList.remove("m-view-in"); void main.offsetWidth; main.classList.add("m-view-in"); }); });
 </script>

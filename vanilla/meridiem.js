@@ -1,8 +1,8 @@
 /* Meridiem UI sans framework : les blocs du design system Olympe pour les pages HTML/JS simples
    (Command Center, outils internes). Même rendu que la librairie React.
    Dépend de olympe.css, et pour les visuels de marque de art.js (window.MeridiemArt) et icons.js.
-   API : window.MUI = { kpi, iso, bind, area, columns, donut, radial, banner, ctaBand, empty, badge,
-                        toast, menu, navPill, dotChart, dotField, city } */
+   API : window.MUI = { kpi, kpis, iso, bind, area, columns, donut, radial, banner, ctaBand, empty, badge,
+                        toast, menu, navPill, palette, dotChart, dotField, city } */
 (function () {
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -340,6 +340,82 @@
     return { update: function () { move(false); } };
   }
 
-  window.MUI = { kpi: kpi, iso: iso, bind: bind, area: area, columns: columns, donut: donut, radial: radial, banner: banner, ctaBand: ctaBand, empty: empty, badge: badge,
-    toast: toast, menu: menu, navPill: navPill, dotChart: dotChart, dotField: dotField, city: city, CHART: CHART, citySrc: null };
+  /* Rangée de cartes indicateur qui se met à jour EN PLACE : MUI.kpis(el, [{ label, value, note, kind, badge, onclick, gauge }])
+     Premier appel : rend les cartes et les anime (bind). Appels suivants avec les mêmes cartes (même libellé, même
+     illustration, même clic) : seuls la valeur, la note et le badge changent ; rien ne clignote, aucune animation ne
+     se rejoue. Fait pour les pages qui se rafraîchissent toutes les quelques secondes. */
+  function kpis(el, list) {
+    list = list || [];
+    el.classList.add("m-kpis");
+    var sig = list.map(function (o) { return [o.kind || "", o.label || "", o.onclick || "", o.gauge == null ? "" : Number(o.gauge).toFixed(2), o.note ? 1 : 0, o.badge ? 1 : 0].join("|"); }).join("§");
+    if (el._muiSig !== sig || el.children.length !== list.length) {
+      el.innerHTML = list.map(kpi).join(""); el._muiSig = sig; bind(el); return;
+    }
+    function put(node, v) { if (node && node._v !== v) { node.innerHTML = v; node._v = v; } }
+    list.forEach(function (o, i) {
+      var c = el.children[i];
+      put(c.querySelector(".m-kpi-value"), o.value == null ? "" : String(o.value));
+      put(c.querySelector(".m-kpi-note"), o.note || "");
+      var top = c.querySelector(".m-kpi-top"), b = top && top.children[1];
+      if (b && o.badge && b._v !== o.badge) { b.outerHTML = o.badge; top.children[1]._v = o.badge; }
+    });
+  }
+
+  /* Palette de commandes (⌘K), même esprit que cmdk : MUI.palette({ items, placeholder, empty, hotkey })
+     items : tableau ou fonction qui le renvoie à chaque ouverture, [{ group, label, icon, hint, keywords, run }].
+     Champ de filtre (sans accents ni casse), flèches pour choisir, Entrée pour lancer, Échap pour fermer.
+     hotkey : true pour ⌘K / Ctrl+K. Renvoie { open, close, toggle, isOpen }. */
+  function norm(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+  function palette(o) {
+    o = o || {};
+    var back = document.createElement("div"); back.className = "m-pal-back";
+    back.innerHTML = '<div class="m-pal" role="dialog" aria-modal="true" aria-label="' + esc(o.placeholder || "Rechercher") + '">' +
+      '<div class="m-pal-in"><i data-icon="Search01"></i><input type="text" autocomplete="off" spellcheck="false" placeholder="' + esc(o.placeholder || "Rechercher") + '"><span class="m-kbd">Échap</span></div>' +
+      '<div class="m-pal-list" role="listbox"></div>' +
+      '<div class="m-pal-foot"><span><span class="m-kbd">↑</span><span class="m-kbd">↓</span> ' + esc(o.navLabel || "choisir") + '</span><span><span class="m-kbd">Entrée</span> ' + esc(o.goLabel || "ouvrir") + '</span><span><span class="m-kbd">Échap</span> ' + esc(o.closeLabel || "fermer") + "</span></div></div>";
+    document.body.appendChild(back);
+    if (window.MeridiemIcons) window.MeridiemIcons.hydrate(back);
+    var input = back.querySelector("input"), list = back.querySelector(".m-pal-list"), shown = [], sel = 0, prevFocus = null;
+    function all() { return (typeof o.items === "function" ? o.items() : o.items) || []; }
+    function draw() {
+      var q = norm(input.value).split(/\s+/).filter(Boolean), groups = [], by = {};
+      shown = all().filter(function (it) { var h = norm([it.label, it.keywords, it.group].join(" ")); return q.every(function (w) { return h.indexOf(w) >= 0; }); });
+      shown.forEach(function (it) { var g = it.group || ""; if (!by[g]) { by[g] = []; groups.push(g); } by[g].push(it); });
+      shown = []; groups.forEach(function (g) { shown = shown.concat(by[g]); });
+      if (sel >= shown.length) sel = Math.max(0, shown.length - 1);
+      var n = 0;
+      list.innerHTML = shown.length ? groups.map(function (g) {
+        return (g ? '<div class="m-pal-group">' + esc(g) + "</div>" : "") + by[g].map(function (it) {
+          var i = n++;
+          return '<div class="m-pal-item' + (i === sel ? " is-on" : "") + '" role="option" data-i="' + i + '">' + (it.icon && window.meridiemIcon ? window.meridiemIcon(it.icon, 16) : "") +
+            "<span>" + esc(it.label) + "</span>" + (it.hint ? '<span class="m-pal-hint">' + esc(it.hint) + "</span>" : "") + "</div>";
+        }).join("");
+      }).join("") : '<div class="m-pal-empty">' + esc(o.empty || "Aucun résultat.") + "</div>";
+    }
+    function mark() {
+      list.querySelectorAll(".m-pal-item").forEach(function (x) { x.classList.toggle("is-on", +x.getAttribute("data-i") === sel); });
+      var on = list.querySelector(".m-pal-item.is-on"); if (on) on.scrollIntoView({ block: "nearest" });
+    }
+    function run(i) { var it = shown[i]; if (!it) return; close(); if (it.run) setTimeout(function () { it.run(); }, 0); }
+    function open() { prevFocus = document.activeElement; input.value = ""; sel = 0; draw(); back.classList.add("is-open"); setTimeout(function () { input.focus(); }, 0); }
+    function close() { if (!back.classList.contains("is-open")) return; back.classList.remove("is-open"); if (prevFocus && prevFocus.focus) try { prevFocus.focus(); } catch (e) { /* élément disparu */ } }
+    function isOpen() { return back.classList.contains("is-open"); }
+    input.addEventListener("input", function () { sel = 0; draw(); });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") { e.preventDefault(); sel = Math.min(shown.length - 1, sel + 1); mark(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); sel = Math.max(0, sel - 1); mark(); }
+      else if (e.key === "Enter") { e.preventDefault(); run(sel); }
+      else if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(); }
+    });
+    list.addEventListener("mousemove", function (e) { var it = e.target.closest(".m-pal-item"); if (it && +it.getAttribute("data-i") !== sel) { sel = +it.getAttribute("data-i"); mark(); } });
+    list.addEventListener("click", function (e) { var it = e.target.closest(".m-pal-item"); if (it) run(+it.getAttribute("data-i")); });
+    back.addEventListener("mousedown", function (e) { if (e.target === back) close(); });
+    if (o.hotkey) document.addEventListener("keydown", function (e) {
+      if ((e.metaKey || e.ctrlKey) && !e.altKey && (e.key === "k" || e.key === "K")) { e.preventDefault(); if (isOpen()) close(); else open(); }
+    });
+    return { open: open, close: close, toggle: function () { if (isOpen()) close(); else open(); }, isOpen: isOpen };
+  }
+
+  window.MUI = { kpi: kpi, kpis: kpis, iso: iso, bind: bind, area: area, columns: columns, donut: donut, radial: radial, banner: banner, ctaBand: ctaBand, empty: empty, badge: badge,
+    toast: toast, menu: menu, navPill: navPill, palette: palette, dotChart: dotChart, dotField: dotField, city: city, CHART: CHART, citySrc: null };
 })();

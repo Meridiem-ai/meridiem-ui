@@ -127,7 +127,17 @@ export function TypesBarChart({ className }: { className?: string }) {
             <XAxis dataKey="type" tickLine={false} axisLine={false} tickMargin={10} interval={0} fontSize={12} />
             <ChartTooltip cursor={<RoundedCursor />} content={<ChartTooltipContent />} />
             <Bar dataKey="n" maxBarSize={56} shape={(p: unknown) => <Column {...(p as object)} active={active} />} animationDuration={900} animationEasing="ease-out">
-              <LabelList dataKey="n" position="top" offset={10} fontSize={12} className="fill-foreground" formatter={((v: unknown) => `${v} · ${Math.round((Number(v) / TYPES_TOTAL) * 100)}\u202F%`) as never} />
+              <LabelList dataKey="n" content={((lp: { viewBox?: { x?: number; y?: number; width?: number }; x?: number | string; y?: number | string; width?: number | string; value?: number | string }) => {
+                const vb = lp.viewBox || {}
+                const x = Number(vb.x ?? lp.x) + Number(vb.width ?? lp.width) / 2, y = Number(vb.y ?? lp.y) - 10, v = Number(lp.value)
+                if (!Number.isFinite(x) || !Number.isFinite(y)) return null
+                return (
+                  <text x={x} y={y} textAnchor="middle" className="fill-foreground">
+                    <tspan fontSize={13} fontWeight={500}>{v}</tspan>
+                    <tspan fontSize={11} className="fill-muted-foreground" dx={4}>{Math.round((v / TYPES_TOTAL) * 100)}{"\u202F"}%</tspan>
+                  </text>
+                )
+              }) as never} />
             </Bar>
           </BarChart>
         </ChartContainer>

@@ -214,7 +214,7 @@
     var X = function (i) { return padL + (W - padL - padR) * (n === 1 ? 0.5 : i / (n - 1)); }, Y = function (v) { return padT + (H - padT - padB) * (1 - v / max); };
     var fmt = o.format || nf, g = "", defs = "";
     for (var t = 0; t <= 4; t++) { var v = max * t / 4, y = Y(v); g += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y + '" y2="' + y + '" class="m-grid"/><text x="' + (padL - 6) + '" y="' + (y + 3) + '" class="m-axis" text-anchor="end">' + Math.round(v) + "</text>"; }
-    var every = Math.ceil(n / 7);
+    var every = Math.max(Math.ceil(n / 7), Math.ceil(n / Math.max(2, Math.floor((W - padL - padR) / 58))));   // au plus une date tous les 58 px (téléphone)
     o.labels.forEach(function (l, i) { if ((n - 1 - i) % every === 0) g += '<text x="' + X(i) + '" y="' + (H - 6) + '" class="m-axis" text-anchor="middle">' + esc(l) + "</text>"; });
     var paths = "";
     o.series.forEach(function (s, si) {
@@ -397,7 +397,7 @@
       var on = list.querySelector(".m-pal-item.is-on"); if (on) on.scrollIntoView({ block: "nearest" });
     }
     function run(i) { var it = shown[i]; if (!it) return; close(); if (it.run) setTimeout(function () { it.run(); }, 0); }
-    function open() { prevFocus = document.activeElement; input.value = ""; sel = 0; draw(); back.classList.add("is-open"); setTimeout(function () { input.focus(); }, 0); }
+    function open() { prevFocus = document.activeElement; input.value = ""; sel = 0; draw(); back.classList.add("is-open"); input.focus(); }
     function close() { if (!back.classList.contains("is-open")) return; back.classList.remove("is-open"); if (prevFocus && prevFocus.focus) try { prevFocus.focus(); } catch (e) { /* élément disparu */ } }
     function isOpen() { return back.classList.contains("is-open"); }
     input.addEventListener("input", function () { sel = 0; draw(); });

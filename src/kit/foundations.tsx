@@ -1,7 +1,7 @@
 /* Fondations : couleurs, typographie, formes, icônes (Hugeicons, style stroke rounded de Speyy). */
 import { useMemo, useState } from "react"
 import {
-  Add01Icon, Agreement01Icon, AiBrain01Icon, Alert02Icon, Analytics01Icon, Archive02Icon, ArrowLeft01Icon, ArrowRight01Icon, ArrowUpDownIcon, Attachment01Icon, BankIcon, Bookmark01Icon, BriefcaseBusinessIcon, Building03Icon, Calendar03Icon, Call02Icon, Cancel01Icon, ChartHistogramIcon, ChartLineData01Icon, CheckListIcon, CheckmarkCircle02Icon, Clock01Icon, CloudUploadIcon, ConnectIcon, Contact01Icon, Copy01Icon, CustomerSupportIcon, DashboardSquare01Icon, Database01Icon, Delete02Icon, DeliveryTruck01Icon, Download01Icon, Factory01Icon, File01Icon, FilterIcon, FingerPrintIcon, Folder01Icon, Globe02Icon, GridViewIcon, HelpCircleIcon, Home01Icon, Image01Icon, InboxIcon, InformationCircleIcon, Invoice01Icon, Invoice03Icon, Key01Icon, KeyboardIcon, Layers01Icon, Link01Icon, Location01Icon, LockIcon, Login01Icon, Logout01Icon, Mail01Icon, MailOpen01Icon, Menu01Icon, Message01Icon, MessageMultiple01Icon, Mic01Icon, Money01Icon, Moon02Icon, MoreHorizontalIcon, Note01Icon, Notification01Icon, Package01Icon, PencilEdit02Icon, PercentIcon, PieChartIcon, Plug01Icon, PrinterIcon, Refresh01Icon, Robot01Icon, Search01Icon, SecurityCheckIcon, SentIcon, ServerStack01Icon, Settings02Icon, Share08Icon, ShoppingCart01Icon, SidebarLeftIcon, StarIcon, Store01Icon, Sun03Icon, Tag01Icon, Target02Icon, Task01Icon, Tick02Icon, UnfoldMoreIcon, Upload01Icon, UserCircleIcon, UserGroupIcon, UserIcon, ViewIcon, Wallet01Icon, WorkflowSquare01Icon,
+  Add01Icon, Agreement01Icon, AiBrain01Icon, Alert02Icon, Analytics01Icon, Archive02Icon, ArrowLeft01Icon, ArrowRight01Icon, ArrowUpDownIcon, Attachment01Icon, BankIcon, BookOpen01Icon, Bookmark01Icon, BriefcaseBusinessIcon, Building03Icon, Calendar03Icon, Call02Icon, Cancel01Icon, ChartHistogramIcon, ChartLineData01Icon, CheckListIcon, CheckmarkCircle02Icon, Clock01Icon, CloudUploadIcon, ComputerTerminal01Icon, ConnectIcon, Contact01Icon, Copy01Icon, CustomerSupportIcon, DashboardSquare01Icon, Database01Icon, Delete02Icon, DeliveryTruck01Icon, Download01Icon, Factory01Icon, File01Icon, FilterIcon, FingerPrintIcon, Flag02Icon, FlashIcon, Folder01Icon, FullScreenIcon, GitCommitHorizontalIcon, Globe02Icon, GridTableIcon, GridViewIcon, HelpCircleIcon, Home01Icon, Image01Icon, InboxIcon, InformationCircleIcon, Invoice01Icon, Invoice03Icon, KanbanIcon, Key01Icon, KeyboardIcon, Layers01Icon, Link01Icon, LinkSquare02Icon, Location01Icon, LockIcon, Login01Icon, Logout01Icon, Mail01Icon, MailOpen01Icon, Megaphone01Icon, Menu01Icon, Message01Icon, MessageMultiple01Icon, Mic01Icon, Money01Icon, Moon02Icon, MoreHorizontalIcon, Note01Icon, Notification01Icon, Package01Icon, PencilEdit02Icon, PercentIcon, PieChartIcon, PlayIcon, Plug01Icon, PrinterIcon, Pulse01Icon, Refresh01Icon, Robot01Icon, Route01Icon, Search01Icon, SecurityCheckIcon, SentIcon, ServerStack01Icon, Settings02Icon, Share08Icon, ShoppingCart01Icon, SidebarLeftIcon, SignpostIcon, SourceCodeIcon, SquareLock02Icon, SquareUnlock02Icon, StarIcon, StopIcon, Store01Icon, Sun03Icon, Tag01Icon, Target02Icon, Task01Icon, TaskAdd01Icon, Tick02Icon, UnfoldMoreIcon, Upload01Icon, UserCircleIcon, UserGroupIcon, UserIcon, ViewIcon, ViewOffIcon, Wallet01Icon, WorkflowSquare01Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import { toast } from "sonner"
@@ -81,7 +81,27 @@ const ICONS: [string, string, IconSvgElement][] = [
   ["MessageMultiple01Icon", "Conversation", MessageMultiple01Icon], ["CustomerSupportIcon", "Support", CustomerSupportIcon], ["Location01Icon", "Adresse", Location01Icon], ["StarIcon", "Favori", StarIcon], ["Bookmark01Icon", "Signet", Bookmark01Icon], ["Share08Icon", "Partager", Share08Icon],
   ["Refresh01Icon", "Actualiser", Refresh01Icon], ["MoreHorizontalIcon", "Plus", MoreHorizontalIcon], ["ArrowRight01Icon", "Suivant", ArrowRight01Icon], ["ArrowLeft01Icon", "Précédent", ArrowLeft01Icon], ["ArrowUpDownIcon", "Trier", ArrowUpDownIcon], ["UnfoldMoreIcon", "Déplier", UnfoldMoreIcon],
   ["SidebarLeftIcon", "Menu latéral", SidebarLeftIcon], ["Menu01Icon", "Menu", Menu01Icon], ["GridViewIcon", "Grille", GridViewIcon], ["Layers01Icon", "Calques", Layers01Icon], ["KeyboardIcon", "Raccourcis", KeyboardIcon], ["Login01Icon", "Connexion", Login01Icon],
-  ["Logout01Icon", "Déconnexion", Logout01Icon], ["PrinterIcon", "Imprimer", PrinterIcon], ["Image01Icon", "Image", Image01Icon], ["Mic01Icon", "Micro", Mic01Icon], ["Sun03Icon", "Clair", Sun03Icon], ["Moon02Icon", "Sombre", Moon02Icon],
+  ["Logout01Icon", "Déconnexion", Logout01Icon],
+  ["KanbanIcon", "Kanban", KanbanIcon],
+  ["BookOpen01Icon", "Lecture", BookOpen01Icon],
+  ["Megaphone01Icon", "Annonce", Megaphone01Icon],
+  ["ComputerTerminal01Icon", "Terminal", ComputerTerminal01Icon],
+  ["Pulse01Icon", "Activité", Pulse01Icon],
+  ["FullScreenIcon", "Plein écran", FullScreenIcon],
+  ["GridTableIcon", "Tableau", GridTableIcon],
+  ["LinkSquare02Icon", "Lien externe", LinkSquare02Icon],
+  ["PlayIcon", "Lancer", PlayIcon],
+  ["StopIcon", "Arrêter", StopIcon],
+  ["TaskAdd01Icon", "Nouvelle tâche", TaskAdd01Icon],
+  ["SquareUnlock02Icon", "Déverrouiller", SquareUnlock02Icon],
+  ["SquareLock02Icon", "Verrouiller", SquareLock02Icon],
+  ["Route01Icon", "Parcours", Route01Icon],
+  ["SignpostIcon", "Orientation", SignpostIcon],
+  ["FlashIcon", "Rapide", FlashIcon],
+  ["Flag02Icon", "Drapeau", Flag02Icon],
+  ["ViewOffIcon", "Masquer", ViewOffIcon],
+  ["GitCommitHorizontalIcon", "Commit", GitCommitHorizontalIcon],
+  ["SourceCodeIcon", "Code", SourceCodeIcon], ["PrinterIcon", "Imprimer", PrinterIcon], ["Image01Icon", "Image", Image01Icon], ["Mic01Icon", "Micro", Mic01Icon], ["Sun03Icon", "Clair", Sun03Icon], ["Moon02Icon", "Sombre", Moon02Icon],
 ]
 
 export function Icons() {

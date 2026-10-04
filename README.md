@@ -8,7 +8,7 @@ Le design system de [Meridiem](https://www.meridiem.be) : un socle commun pour l
 | Dossier | Contenu | Pour |
 |---|---|---|
 | `registry.json`, `public/r/` | registre shadcn : thème, styles, briques de marque, carte animée, graphiques, table, plateforme type, landing | projets React (Vite, Next) |
-| `vanilla/` | `olympe.css` (classes `.m-*`), `icons.js` (96 icônes en SVG), `art.js` (visuels de marque), `demo.html` | pages sans framework |
+| `vanilla/` | `olympe.css` (classes `.m-*`), `icons.js` (116 icônes en SVG), `art.js` (visuels de marque), `demo.html` | pages sans framework |
 | `tokens/` | jetons au format DTCG | tout outil (Figma, Style Dictionary, documents) |
 | `src/` | la démo : plateforme interactive, landing, kit de référence | consulter, copier |
 | `DESIGN.md` | les règles, à lire avant toute interface | humains et agents |

@@ -280,17 +280,60 @@
 .m-pal-group { padding: 10px 10px 4px; font: 500 11px/1 var(--m-font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--m-muted-fg); }
 .m-pal-item { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 10px; border-radius: 8px; font-size: 13.5px; cursor: pointer; }
 .m-pal-item svg { flex: none; color: var(--m-muted-fg); }
-.m-pal-item span:not(.m-pal-hint) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.m-pal-item.has-sub { min-height: 46px; padding-top: 5px; padding-bottom: 5px; }
+.m-pal-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.m-pal-l, .m-pal-s { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.m-pal-s { font-size: 12px; color: var(--m-muted-fg); }
+.m-pal-item .m-badge { flex: none; }
+.m-pal-hl { background: color-mix(in srgb, var(--m-primary) 16%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+.m-pal-loading { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 10px; font-size: 13px; color: var(--m-muted-fg); }
+.m-spin { width: 14px; height: 14px; flex: none; border-radius: 50%; border: 2px solid var(--m-border); border-top-color: var(--m-primary); animation: m-spin .7s linear infinite; }
+@keyframes m-spin { to { transform: rotate(360deg); } }
 .m-pal-item.is-on { background: var(--m-accent); }
 .m-pal-item.is-on svg { color: var(--m-fg); }
-.m-pal-hint { margin-left: auto; flex: none; font: 11px/1 var(--m-font-mono); color: var(--m-muted-fg); }
-.m-pal-empty { padding: 28px 12px; text-align: center; font-size: 13px; color: var(--m-muted-fg); }
+.m-pal-hint { flex: none; font: 11px/1 var(--m-font-mono); color: var(--m-muted-fg); }
+.m-pal-empty { padding: 22px 12px 14px; text-align: center; font-size: 13px; color: var(--m-muted-fg); overflow-wrap: anywhere; }
 .m-pal-foot { display: flex; flex-wrap: wrap; gap: 14px; padding: 9px 14px; border-top: 1px solid var(--m-border); font-size: 11.5px; color: var(--m-muted-fg); }
 .m-pal-foot > span { display: inline-flex; align-items: center; gap: 4px; }
 @keyframes m-pal-in { from { opacity: 0; transform: translateY(-6px) scale(.985); } }
 @media (max-width: 600px) { .m-pal-back { padding-top: 10vh; } .m-pal-foot { display: none; } }
 
+/* Fenêtre centrée (MUI.dialog) */
+.m-dialog-back { position: fixed; inset: 0; z-index: 80; display: none; align-items: center; justify-content: center; padding: 16px; background: rgb(28 27 26 / .34); }
+.m-dialog-back.is-open { display: flex; animation: m-fade-in .16s ease; }
+.m-dialog { position: relative; width: 100%; max-width: 520px; max-height: calc(100vh - 32px); display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--m-border); border-radius: var(--m-radius-lg); background: var(--m-card); box-shadow: var(--m-shadow-lift); color: var(--m-fg); font: 14px/1.5 var(--m-font-sans); outline: none; }
+.m-dialog.is-lg { max-width: 680px; } .m-dialog.is-sm { max-width: 400px; }
+.m-dialog-back.is-open .m-dialog { animation: m-dialog-in .22s cubic-bezier(.2, .8, .2, 1); }
+.m-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 20px 12px; }
+.m-dialog-title { margin: 0; font: 400 24px/1.15 var(--m-font-heading); letter-spacing: -.01em; }
+.m-dialog-desc { margin: 4px 0 0; font-size: 13px; color: var(--m-muted-fg); }
+.m-dialog-x { margin: -4px -6px 0 0; }
+.m-dialog-body { padding: 4px 20px 20px; overflow-y: auto; }
+.m-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--m-border); background: var(--m-bg); }
+html.m-dialog-lock { overflow: hidden; }
+@keyframes m-fade-in { from { opacity: 0; } }
+@keyframes m-dialog-in { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+
+/* Réglage : libellé et aide à gauche, commande à droite (dans une fenêtre ou une carte) */
+.m-section + .m-section { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--m-border); }
+.m-section-t { margin: 0 0 8px; font: 500 11px/1 var(--m-font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--m-muted-fg); }
+.m-setting { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0; }
+.m-setting + .m-setting { border-top: 1px dashed var(--m-border); }
+.m-setting-t { display: block; font-size: 14px; font-weight: 500; }
+.m-setting-d { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.45; color: var(--m-muted-fg); }
+.m-setting > :first-child { min-width: 0; }
+.m-setting > :last-child { flex: none; }
+
+/* Interrupteur : <input type="checkbox" class="m-switch"> */
+.m-switch { appearance: none; -webkit-appearance: none; position: relative; width: 36px; height: 20px; margin: 0; flex: none; border-radius: 999px; background: var(--m-input); cursor: pointer; transition: background .18s; }
+.m-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / .2); transition: transform .18s cubic-bezier(.3, .9, .3, 1.2); }
+.m-switch:checked { background: var(--m-primary); }
+.m-switch:checked::after { transform: translateX(16px); }
+.m-switch:focus-visible { outline: 2px solid var(--m-ring); outline-offset: 2px; }
+.m-switch:disabled { opacity: .5; cursor: not-allowed; }
+.m-tabs button.active { background: var(--m-card); color: var(--m-fg); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+
 /* Changement de vue */
 @keyframes m-view-in { from { opacity: 0; transform: translateY(10px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
 .m-view-in { animation: m-view-in .28s cubic-bezier(.2, .8, .2, 1); }
-@media (prefers-reduced-motion: reduce) { .m-grow, .m-draw, .m-radial-arc, .m-toast, .m-view-in, .m-pill, .m-pal { animation: none !important; transition: none !important; } .m-radial-arc { stroke-dashoffset: var(--to); } }
+@media (prefers-reduced-motion: reduce) { .m-grow, .m-draw, .m-radial-arc, .m-toast, .m-view-in, .m-pill, .m-pal, .m-dialog, .m-dialog-back, .m-switch, .m-switch::after, .m-spin { animation: none !important; transition: none !important; } .m-radial-arc { stroke-dashoffset: var(--to); } }

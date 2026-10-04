@@ -38,7 +38,7 @@
         <button class="m-sb-userbtn" id="userbtn"><span class="m-avatar">MS</span><span style="min-width:0"><b>Maxime Schifflers</b><small>maxime@meridiem.be</small></span><i data-icon="UnfoldMore" style="margin-left:auto;color:var(--m-muted-fg)"></i></button>
         <div id="usermenu">
           <div class="m-menu-head"><span class="m-avatar">MS</span><div><b style="font-weight:500">Maxime Schifflers</b><div class="m-muted" style="font-size:12px">Meridiem</div></div></div>
-          <button class="m-menu-item" onclick="MUI.toast('Réglages')"><i data-icon="Settings02"></i>Réglages<span class="m-kbd">⌘,</span></button>
+          <button class="m-menu-item" onclick="dlg.open()"><i data-icon="Settings02"></i>Réglages</button>
           <button class="m-menu-item" onclick="MUI.toast('Aide')"><i data-icon="HelpCircle"></i>Aide</button>
           <div class="m-menu-sep"></div>
           <button class="m-menu-item is-danger" onclick="MUI.toast('Déconnexion', { description: 'Désactivée dans la démo' })"><i data-icon="Logout01"></i>Se déconnecter</button>
@@ -79,7 +79,12 @@
   var pal = MUI.palette({ placeholder: "Rechercher une page ou une action", hotkey: true, items: [
     { group: "Pages", label: "Tableau de bord", icon: "DashboardSquare01" }, { group: "Pages", label: "Tâches", icon: "Kanban", hint: "26" },
     { group: "Pages", label: "Messages", icon: "Message01" }, { group: "Pages", label: "CRM", icon: "Analytics01" }, { group: "Pages", label: "Projets", icon: "Folder01" },
-    { group: "Actions", label: "Nouvelle tâche", icon: "Add01", run: function () { MUI.toast("Nouvelle tâche", { description: "Formulaire (démo)" }); } } ] });
+    { group: "Actions", label: "Nouvelle tâche", icon: "Add01", run: function () { MUI.toast("Nouvelle tâche", { description: "Formulaire (démo)" }); } } ],
+    sources: [{ group: "Tâches", items: [{ label: "Relancer le devis Verrerie Delvaux", sub: "À faire", icon: "Task01", badge: MUI.badge("wait", "à valider") },
+      { label: "Préparer la réunion Biscuiterie Destrée", sub: "En cours", icon: "Task01", badge: MUI.badge("info", "en cours") }] }],
+    emptyText: function (q) { return "Aucun résultat pour « " + q + " »"; },
+    emptyItems: function () { return [{ group: "Suggestion", label: "Nouvelle tâche", icon: "Add01" }]; } });
+  var dlg = MUI.dialog({ title: "Réglages", content: '<div class="m-section"><p class="m-section-t">Confidentialité</p><label class="m-setting"><span><span class="m-setting-t">Masquer les montants</span><span class="m-setting-d">Floute les montants à l\'écran.</span></span><input type="checkbox" class="m-switch"></label></div>' });
   MUI.menu(document.getElementById("userbtn"), document.getElementById("usermenu"), { side: "top" });
   document.querySelectorAll("#nav .m-nav-item").forEach(function (a) { a.addEventListener("click", function () { document.querySelectorAll("#nav .m-nav-item").forEach(function (x) { x.classList.toggle("is-active", x === a); }); main.classList.remove("m-view-in"); void main.offsetWidth; main.classList.add("m-view-in"); }); });
 </script>

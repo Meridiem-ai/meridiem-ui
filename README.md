@@ -65,8 +65,40 @@ Les blocs du design system existent aussi sans framework (`vanilla/meridiem.js`,
 | Graphiques | `MUI.area(el, …)`, `MUI.columns(el, …)`, `MUI.donut(el, …)`, `MUI.radial(el, …)` |
 | Bandeau ville en points, bloc à points animés | `MUI.banner({ … })`, `MUI.ctaBand({ … })` |
 | Menu du compte, pastille de navigation | `MUI.menu(bouton, panneau, { side: "top" })`, `MUI.navPill(nav)` |
-| Palette de commandes ⌘K | `MUI.palette({ items: [{ group, label, icon, hint, run }], hotkey: true })` |
+| Palette de commandes ⌘K, recherche dans le contenu | `MUI.palette({ items, sources, hotkey: true })` (détail ci-dessous) |
+| Fenêtre centrée (réglages, confirmation) | `MUI.dialog({ title, description, content, footer })` puis `.open()` ; interrupteur `<input type="checkbox" class="m-switch">`, lignes `.m-section` et `.m-setting` |
 | Toasts, état vide, badge | `MUI.toast(titre, { description })`, `MUI.empty({ … })`, `MUI.badge(statut, texte)` |
+
+### Palette ⌘K : pages, actions et recherche dans les données
+```js
+const pal = MUI.palette({
+  hotkey: true,                                   // ⌘K / Ctrl+K
+  placeholder: "Rechercher",
+  items: () => [                                  // fixes : tous visibles quand le champ est vide
+    { group: "Pages", label: "Clients", icon: "UserGroup", run: () => go("clients") },
+    { group: "Actions", label: "Nouvelle demande", icon: "Add01", run: () => newRequest() },
+  ],
+  sources: [{                                     // cherchées quand on tape, avant les pages
+    group: "Clients",
+    items: () => CLIENTS.map(c => ({ label: c.name, sub: c.city, icon: "Building03", badge: MUI.badge("ok", "actif"), run: () => openClient(c.id) })),
+    ready: () => CLIENTS.length > 0,              // données déjà en mémoire ?
+    load: () => fetch("/api/clients").then(r => r.json()).then(d => { CLIENTS = d }),   // sinon chargées à l'ouverture
+    ttl: 5 * 60 * 1000,                           // cache, rechargé en arrière-plan après 5 min
+  }],
+  limit: 5,                                       // résultats par groupe
+  emptyText: q => `Aucun résultat pour « ${q} »`,
+  emptyItems: q => [{ group: "Suggestion", label: "Nouvelle demande", icon: "Add01", run: () => newRequest(q) }],
+});
+```
+Recherche sans accents ni casse, mot à mot (tous les mots doivent figurer dans `label`, `sub`, `keywords` ou `group`),
+classement par pertinence (début du libellé d'abord), termes en surbrillance, ligne « Chargement… » tant qu'une source
+charge, flèches puis Entrée, Échap. `pal.open()`, `pal.close()`, `pal.refresh()`.
+
+### Fenêtre centrée
+```js
+const dlg = MUI.dialog({ title: "Réglages", description: "Pour ce navigateur", content: document.getElementById("reglages") });
+dlg.open();   // voile, titre en serif, croix, Échap et clic sur le voile ferment ; l'élément garde ses ids et écouteurs
+```
 
 Exemple complet : `vanilla/demo.html` (à servir en http, pas en file://).
 

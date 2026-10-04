@@ -2,7 +2,7 @@
    (Command Center, outils internes). Même rendu que la librairie React.
    Dépend de olympe.css, et pour les visuels de marque de art.js (window.MeridiemArt) et icons.js.
    API : window.MUI = { kpi, kpis, iso, bind, area, columns, donut, radial, banner, ctaBand, empty, badge,
-                        toast, menu, navPill, palette, dotChart, dotField, city } */
+                        toast, menu, navPill, palette, dialog, dotChart, dotField, city } */
 (function () {
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -361,13 +361,37 @@
     });
   }
 
-  /* Palette de commandes (⌘K), même esprit que cmdk : MUI.palette({ items, placeholder, empty, hotkey })
-     items : tableau ou fonction qui le renvoie à chaque ouverture, [{ group, label, icon, hint, keywords, run }].
-     Champ de filtre (sans accents ni casse), flèches pour choisir, Entrée pour lancer, Échap pour fermer.
-     hotkey : true pour ⌘K / Ctrl+K. Renvoie { open, close, toggle, isOpen }. */
+  /* Palette de commandes (⌘K), même esprit que cmdk :
+     MUI.palette({ items, sources, placeholder, hotkey, limit, emptyText, emptyItems, loadingLabel, navLabel, goLabel, closeLabel })
+     - items   : éléments fixes (pages, actions), tableau ou fonction ; tous affichés quand le champ est vide.
+     - sources : contenus cherchés quand on tape [{ group, items, ready, load, ttl, limit, minChars }].
+                 items = tableau ou fonction ; ready() dit si les données sont déjà là ; sinon load() (Promise)
+                 est appelé à l'ouverture, une ligne « Chargement… » s'affiche dans le groupe, puis le résultat
+                 reste en cache (rechargé en arrière-plan après ttl ms si ttl est donné).
+     - un élément : { group, label, sub, icon, hint, badge (HTML), keywords, run }.
+     Recherche sans accents ni casse, mot à mot, termes en surbrillance, `limit` résultats par groupe (5),
+     flèches pour choisir, Entrée pour lancer, Échap pour fermer. Sans résultat : emptyText(q) et emptyItems(q).
+     hotkey : true pour ⌘K / Ctrl+K. Renvoie { open, close, toggle, isOpen, refresh }. */
   function norm(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+  // texte échappé avec les termes cherchés en surbrillance (correspondance sans accents ni casse)
+  function hl(text, terms) {
+    text = String(text == null ? "" : text);
+    if (!terms.length || !text) return esc(text);
+    var n = "", map = [];
+    for (var i = 0; i < text.length; i++) { var c = norm(text[i]); for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); } }
+    var on = new Array(text.length + 1).join("0").split("").map(Number);
+    terms.forEach(function (w) { var k = n.indexOf(w); while (k >= 0) { for (var x = k; x < k + w.length; x++) on[map[x]] = 1; k = n.indexOf(w, k + w.length); } });
+    var out = "", open = false;
+    for (var p = 0; p < text.length; p++) {
+      if (on[p] && !open) { out += '<mark class="m-pal-hl">'; open = true; }
+      if (!on[p] && open) { out += "</mark>"; open = false; }
+      out += esc(text[p]);
+    }
+    return out + (open ? "</mark>" : "");
+  }
   function palette(o) {
     o = o || {};
+    var limit = o.limit || 5, sources = o.sources || [];
     var back = document.createElement("div"); back.className = "m-pal-back";
     back.innerHTML = '<div class="m-pal" role="dialog" aria-modal="true" aria-label="' + esc(o.placeholder || "Rechercher") + '">' +
       '<div class="m-pal-in"><i data-icon="Search01"></i><input type="text" autocomplete="off" spellcheck="false" placeholder="' + esc(o.placeholder || "Rechercher") + '"><span class="m-kbd">Échap</span></div>' +
@@ -376,28 +400,68 @@
     document.body.appendChild(back);
     if (window.MeridiemIcons) window.MeridiemIcons.hydrate(back);
     var input = back.querySelector("input"), list = back.querySelector(".m-pal-list"), shown = [], sel = 0, prevFocus = null;
-    function all() { return (typeof o.items === "function" ? o.items() : o.items) || []; }
+    function val(x) { return (typeof x === "function" ? x() : x) || []; }
+    function rank(items, terms) {
+      return items.map(function (it, i) {
+        var l = norm(it.label), h = l + " " + norm(it.sub) + " " + norm(it.keywords) + " " + norm(it.group), s = 0;
+        for (var k = 0; k < terms.length; k++) {
+          var w = terms[k]; if (h.indexOf(w) < 0) return null;
+          s += l.indexOf(w) === 0 ? 4 : (l.indexOf(" " + w) >= 0 ? 3 : (l.indexOf(w) >= 0 ? 2 : 1));
+        }
+        return { it: it, s: s, i: i };
+      }).filter(Boolean).sort(function (a, b) { return b.s - a.s || a.i - b.i; }).map(function (x) { return x.it; });
+    }
+    function loading(src) { return !!src._p && !(src.ready && src.ready()) && !src._at; }
+    function itemHtml(it, i, terms) {
+      return '<div class="m-pal-item' + (i === sel ? " is-on" : "") + (it.sub ? " has-sub" : "") + '" role="option" data-i="' + i + '">' +
+        (it.icon && window.meridiemIcon ? window.meridiemIcon(it.icon, 16) : "") +
+        '<span class="m-pal-txt"><span class="m-pal-l">' + hl(it.label, terms) + "</span>" + (it.sub ? '<span class="m-pal-s">' + hl(it.sub, terms) + "</span>" : "") + "</span>" +
+        (it.badge || "") + (it.hint ? '<span class="m-pal-hint">' + esc(it.hint) + "</span>" : "") + "</div>";
+    }
     function draw() {
-      var q = norm(input.value).split(/\s+/).filter(Boolean), groups = [], by = {};
-      shown = all().filter(function (it) { var h = norm([it.label, it.keywords, it.group].join(" ")); return q.every(function (w) { return h.indexOf(w) >= 0; }); });
-      shown.forEach(function (it) { var g = it.group || ""; if (!by[g]) { by[g] = []; groups.push(g); } by[g].push(it); });
-      shown = []; groups.forEach(function (g) { shown = shown.concat(by[g]); });
+      var raw = input.value.trim(), terms = norm(raw).split(/\s+/).filter(Boolean), blocks = [], wait = false;
+      shown = [];
+      // 1. contenus (seulement quand on tape), dans l'ordre des sources
+      if (terms.length) sources.forEach(function (src) {
+        if (raw.length < (src.minChars || 1)) return;
+        var found = rank(val(src.items), terms).slice(0, src.limit || limit);
+        if (found.length) blocks.push({ g: src.group, items: found });
+        else if (loading(src)) { blocks.push({ g: src.group, wait: true }); wait = true; }
+      });
+      // 2. éléments fixes (pages, actions), regroupés dans leur ordre d'apparition
+      var fixed = terms.length ? rank(val(o.items), terms) : val(o.items), by = {}, order = [];
+      fixed.forEach(function (it) { var g = it.group || ""; if (!by[g]) { by[g] = []; order.push(g); } by[g].push(it); });
+      order.forEach(function (g) { blocks.push({ g: g, items: terms.length ? by[g].slice(0, limit) : by[g] }); });
+      var html = "";
+      blocks.forEach(function (b) {
+        html += b.g ? '<div class="m-pal-group">' + esc(b.g) + "</div>" : "";
+        if (b.wait) { html += '<div class="m-pal-loading"><span class="m-spin" aria-hidden="true"></span>' + esc(o.loadingLabel || "Chargement…") + "</div>"; return; }
+        b.items.forEach(function (it) { html += itemHtml(it, shown.length, terms); shown.push(it); });
+      });
+      if (!shown.length && !wait) {
+        var sug = terms.length && o.emptyItems ? val(function () { return o.emptyItems(raw); }) : [];
+        html = '<div class="m-pal-empty">' + esc(terms.length && o.emptyText ? o.emptyText(raw) : (o.empty || "Aucun résultat.")) + "</div>";
+        var lastG = null;
+        sug.forEach(function (it) { if (it.group && it.group !== lastG) { html += '<div class="m-pal-group">' + esc(it.group) + "</div>"; lastG = it.group; } html += itemHtml(it, shown.length, []); shown.push(it); });
+      }
       if (sel >= shown.length) sel = Math.max(0, shown.length - 1);
-      var n = 0;
-      list.innerHTML = shown.length ? groups.map(function (g) {
-        return (g ? '<div class="m-pal-group">' + esc(g) + "</div>" : "") + by[g].map(function (it) {
-          var i = n++;
-          return '<div class="m-pal-item' + (i === sel ? " is-on" : "") + '" role="option" data-i="' + i + '">' + (it.icon && window.meridiemIcon ? window.meridiemIcon(it.icon, 16) : "") +
-            "<span>" + esc(it.label) + "</span>" + (it.hint ? '<span class="m-pal-hint">' + esc(it.hint) + "</span>" : "") + "</div>";
-        }).join("");
-      }).join("") : '<div class="m-pal-empty">' + esc(o.empty || "Aucun résultat.") + "</div>";
+      list.innerHTML = html;
+      mark();
     }
     function mark() {
       list.querySelectorAll(".m-pal-item").forEach(function (x) { x.classList.toggle("is-on", +x.getAttribute("data-i") === sel); });
-      var on = list.querySelector(".m-pal-item.is-on"); if (on) on.scrollIntoView({ block: "nearest" });
+      var on = list.querySelector(".m-pal-item.is-on"); if (on && on.scrollIntoView) on.scrollIntoView({ block: "nearest" });
+    }
+    function fetchSources() {
+      sources.forEach(function (src) {
+        var fresh = src.ready ? src.ready() : !!src._at, stale = src.ttl && src._at && Date.now() - src._at > src.ttl;
+        if (!src.load || src._p || (fresh && !stale)) return;
+        src._p = Promise.resolve().then(src.load).then(function () { src._at = Date.now(); }, function () { /* source indisponible : on garde le cache */ })
+          .then(function () { src._p = null; if (isOpen()) draw(); });
+      });
     }
     function run(i) { var it = shown[i]; if (!it) return; close(); if (it.run) setTimeout(function () { it.run(); }, 0); }
-    function open() { prevFocus = document.activeElement; input.value = ""; sel = 0; draw(); back.classList.add("is-open"); input.focus(); }
+    function open() { prevFocus = document.activeElement; input.value = ""; sel = 0; fetchSources(); draw(); back.classList.add("is-open"); input.focus(); }
     function close() { if (!back.classList.contains("is-open")) return; back.classList.remove("is-open"); if (prevFocus && prevFocus.focus) try { prevFocus.focus(); } catch (e) { /* élément disparu */ } }
     function isOpen() { return back.classList.contains("is-open"); }
     input.addEventListener("input", function () { sel = 0; draw(); });
@@ -413,9 +477,49 @@
     if (o.hotkey) document.addEventListener("keydown", function (e) {
       if ((e.metaKey || e.ctrlKey) && !e.altKey && (e.key === "k" || e.key === "K")) { e.preventDefault(); if (isOpen()) close(); else open(); }
     });
-    return { open: open, close: close, toggle: function () { if (isOpen()) close(); else open(); }, isOpen: isOpen };
+    return { open: open, close: close, toggle: function () { if (isOpen()) close(); else open(); }, isOpen: isOpen, refresh: function () { if (isOpen()) draw(); } };
   }
 
+  /* Fenêtre centrée (même esprit que le Dialog de shadcn) : MUI.dialog({ title, description, content, footer, size, onOpen, onClose })
+     content : chaîne HTML ou élément (déplacé dans la fenêtre, il garde ses écouteurs et ses ids).
+     Voile, titre en serif, bouton de fermeture, Échap et clic sur le voile ferment, ouverture animée,
+     focus rendu à l'élément d'origine. Renvoie { open, close, isOpen, el, body }. */
+  var DLG_OPEN = [];
+  function dialog(o) {
+    o = o || {};
+    var back = document.createElement("div"); back.className = "m-dialog-back";
+    var id = nid("dlg");
+    back.innerHTML = '<div class="m-dialog' + (o.size ? " is-" + o.size : "") + '" role="dialog" aria-modal="true" aria-labelledby="' + id + '" tabindex="-1">' +
+      '<div class="m-dialog-head"><div><h2 class="m-dialog-title" id="' + id + '">' + esc(o.title || "") + "</h2>" + (o.description ? '<p class="m-dialog-desc">' + esc(o.description) + "</p>" : "") + "</div>" +
+      '<button type="button" class="m-btn m-btn-ghost m-btn-icon m-dialog-x" aria-label="' + esc(o.closeLabel || "Fermer") + '"><i data-icon="Cancel01"></i></button></div>' +
+      '<div class="m-dialog-body"></div>' + (o.footer ? '<div class="m-dialog-foot">' + o.footer + "</div>" : "") + "</div>";
+    document.body.appendChild(back);
+    var box = back.querySelector(".m-dialog"), body = back.querySelector(".m-dialog-body"), prev = null;
+    if (typeof o.content === "string") body.innerHTML = o.content; else if (o.content) body.appendChild(o.content);
+    if (window.MeridiemIcons) window.MeridiemIcons.hydrate(back);
+    function isOpen() { return back.classList.contains("is-open"); }
+    function open() {
+      if (isOpen()) return;
+      prev = document.activeElement; back.classList.add("is-open"); DLG_OPEN.push(api);
+      document.documentElement.classList.add("m-dialog-lock");
+      if (o.onOpen) o.onOpen(api);
+      box.focus();
+    }
+    function close() {
+      if (!isOpen()) return;
+      back.classList.remove("is-open"); DLG_OPEN = DLG_OPEN.filter(function (d) { return d !== api; });
+      if (!DLG_OPEN.length) document.documentElement.classList.remove("m-dialog-lock");
+      if (o.onClose) o.onClose(api);
+      if (prev && prev.focus) try { prev.focus(); } catch (e) { /* élément disparu */ }
+    }
+    back.querySelector(".m-dialog-x").addEventListener("click", close);
+    back.addEventListener("mousedown", function (e) { if (e.target === back) close(); });
+    var api = { open: open, close: close, isOpen: isOpen, el: box, body: body };
+    return api;
+  }
+  // Échap ferme la fenêtre du dessus (une seule à la fois)
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && DLG_OPEN.length && !document.querySelector(".m-pal-back.is-open")) { e.stopPropagation(); DLG_OPEN[DLG_OPEN.length - 1].close(); } }, true);
+
   window.MUI = { kpi: kpi, kpis: kpis, iso: iso, bind: bind, area: area, columns: columns, donut: donut, radial: radial, banner: banner, ctaBand: ctaBand, empty: empty, badge: badge,
-    toast: toast, menu: menu, navPill: navPill, palette: palette, dotChart: dotChart, dotField: dotField, city: city, CHART: CHART, citySrc: null };
+    toast: toast, menu: menu, navPill: navPill, palette: palette, dialog: dialog, dotChart: dotChart, dotField: dotField, city: city, CHART: CHART, citySrc: null };
 })();

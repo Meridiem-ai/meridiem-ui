@@ -215,7 +215,7 @@
     var fmt = o.format || nf, g = "", defs = "";
     for (var t = 0; t <= 4; t++) { var v = max * t / 4, y = Y(v); g += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y + '" y2="' + y + '" class="m-grid"/><text x="' + (padL - 6) + '" y="' + (y + 3) + '" class="m-axis" text-anchor="end">' + Math.round(v) + "</text>"; }
     var every = Math.ceil(n / 7);
-    o.labels.forEach(function (l, i) { if (i % every === 0 || (i === n - 1 && (n - 1) % every >= every / 2)) g += '<text x="' + X(i) + '" y="' + (H - 6) + '" class="m-axis" text-anchor="middle">' + esc(l) + "</text>"; });
+    o.labels.forEach(function (l, i) { if ((n - 1 - i) % every === 0) g += '<text x="' + X(i) + '" y="' + (H - 6) + '" class="m-axis" text-anchor="middle">' + esc(l) + "</text>"; });
     var paths = "";
     o.series.forEach(function (s, si) {
       var c = s.color || CHART[si], gid = nid("ag");

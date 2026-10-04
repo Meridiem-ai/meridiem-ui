@@ -13,16 +13,22 @@ Le design system de [Meridiem](https://www.meridiem.be) : un socle commun pour l
 | `src/` | la démo : plateforme interactive, landing, kit de référence | consulter, copier |
 | `DESIGN.md` | les règles, à lire avant toute interface | humains et agents |
 
-## Installer dans un projet React (shadcn/ui)
-Le projet doit déjà utiliser shadcn/ui (Tailwind 4, alias `@/`). Avec `iconLibrary: "hugeicons"` dans `components.json`, les composants shadcn utilisent les mêmes icônes.
-
+## Démarrer un nouveau projet
+**React (Vite ou Next), le cas courant**
 ```bash
+npm create vite@latest mon-app -- --template react-ts
+cd mon-app && npm install && npm install tailwindcss @tailwindcss/vite
+# configurer Tailwind 4 et l'alias @/ (copier vite.config.ts et les "paths" des tsconfig de ce dépôt)
+npx shadcn@latest init -t vite -b radix -p nova
+# dans components.json : "iconLibrary": "hugeicons"
 R=https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r
 npx shadcn@latest add $R/olympe-theme.json $R/olympe-styles.json
-npx shadcn@latest add $R/kpi-card.json $R/charts.json      # au besoin
-npx shadcn@latest add $R/platform.json                      # gabarit de plateforme complet
+npx shadcn@latest add $R/platform.json   # gabarit de plateforme complet, ou $R/landing.json
 ```
-Puis importer les styles dans le CSS principal : `@import "./styles/olympe.css";`.
+Puis ajouter `@import "./styles/olympe.css";` dans le CSS principal, et envelopper l'app dans
+`<TooltipProvider>` avec un `<Toaster />` (sonner).
+
+**Projet React existant** : les deux premières commandes `add`, puis les éléments à la carte.
 
 | Élément | Ce que c'est |
 |---|---|
@@ -34,6 +40,11 @@ Puis importer les styles dans le CSS principal : `@import "./styles/olympe.css";
 | `clients-table` | table de données : recherche, tri, sélection, actions, pagination |
 | `platform` | sidebar, menu du compte, ⌘K, notifications, tableau de bord, demandes, clients, réglages |
 | `landing` | héros sur la ville en points, grille de filets, bloc final, prise de rendez-vous |
+
+## Pour les agents IA
+- Lire `DESIGN.md`, puis ouvrir le kit (`npm run build`, `dist/index.html#kit`) : copier ce qu'on y voit.
+- Réutiliser les blocs ; un équivalent maison est un défaut. Habiller un écran existant, c'est le restructurer avec les blocs, pas seulement changer ses couleurs.
+- Prouver : captures à 1440 et 390 px, liste des blocs utilisés, console propre.
 
 ## Utiliser sans framework
 ```html

@@ -5,58 +5,79 @@
 <title>Olympe sans framework</title>
 <link rel="stylesheet" href="olympe.css">
 <style>
-  .shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
-  .main { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-  .banner { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 45%; min-height: 150px; }
-  .banner canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  @media (max-width: 800px) { .shell { grid-template-columns: 1fr; } .m-sidebar { display: none; } .banner { grid-template-columns: 1fr; } }
+  .shell { display: grid; grid-template-columns: 252px minmax(0, 1fr); min-height: 100vh; }
+  .m-sidebar { position: sticky; top: 0; height: 100vh; box-sizing: border-box; }
+  .nav { display: flex; flex-direction: column; gap: 1px; }
+  .main { padding: 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .row2 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; }
+  .row2b { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .foot { margin-top: auto; display: flex; flex-direction: column; gap: 4px; }
+  @media (max-width: 900px) { .shell { grid-template-columns: 1fr; } .m-sidebar { display: none; } .row2, .row2b { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body class="m-body">
 <div class="shell">
   <aside class="m-sidebar">
-    <div style="display:flex;align-items:center;gap:10px;padding:6px 8px 12px"><img src="../public/assets/meridiem-icone.png" alt="" style="width:28px"><span class="m-h3">Command Center</span></div>
-    <a class="m-nav-item is-active"><i data-icon="DashboardSquare01"></i>Tableau de bord</a>
-    <a class="m-nav-item"><i data-icon="Inbox"></i>Demandes<span class="m-count">12</span></a>
-    <a class="m-nav-item"><i data-icon="Task01"></i>Tâches<span class="m-count">4</span></a>
-    <a class="m-nav-item"><i data-icon="UserGroup"></i>Clients</a>
-    <div class="m-nav-label">Aujourd'hui</div>
-    <a class="m-nav-item m-muted">Relances devis de septembre</a>
-  </aside>
-  <main class="main m-stagger">
-    <section class="m-card banner">
-      <div style="position:relative;z-index:1;padding:22px 24px">
-        <div class="m-eyebrow" style="color:var(--m-primary)">Bonjour Maxime</div>
-        <h1 class="m-h1" style="margin:6px 0">Votre journée</h1>
-        <p class="m-muted" style="margin:0 0 12px">12 demandes à valider, dont 3 urgentes.</p>
-        <button class="m-btn m-btn-primary m-btn-sm">Traiter les demandes</button> <button class="m-btn m-btn-ghost m-btn-sm">Voir le détail</button>
+    <div class="m-sb-ws"><span class="m-sb-mark"><img src="../public/assets/meridiem-icone.png" alt=""></span><div><b>Command Center</b><small>Meridiem</small></div></div>
+    <div class="m-sb-search" onclick="MUI.toast('Recherche', { description: 'Palette ⌘K (démo)' })"><i data-icon="Search01"></i>Rechercher<span class="m-kbd">⌘K</span></div>
+    <nav class="nav" id="nav">
+      <div class="m-nav-label">Pilotage</div>
+      <a class="m-nav-item is-active"><i data-icon="DashboardSquare01"></i>Tableau de bord</a>
+      <a class="m-nav-item"><i data-icon="Kanban"></i>Tâches<span class="m-count">26</span></a>
+      <a class="m-nav-item"><i data-icon="Message01"></i>Messages<span class="m-count">104</span></a>
+      <div class="m-nav-label">Commercial</div>
+      <a class="m-nav-item"><i data-icon="Analytics01"></i>CRM<span class="m-count">9</span></a>
+      <a class="m-nav-item"><i data-icon="Folder01"></i>Projets</a>
+    </nav>
+    <div class="m-nav-label">À valider</div>
+    <div class="m-sb-mini"><span>Relances devis de septembre</span><span class="m-tag">à valider</span></div>
+    <div class="m-sb-mini"><span>Réclamation commande 4512</span><span class="m-tag is-crit">urgent</span></div>
+    <div class="foot">
+      <div class="m-sb-system"><span class="m-badge is-ok">Taskrunner</span><span class="m-badge is-ok">Opérateur</span></div>
+      <div class="m-sb-user">
+        <button class="m-sb-userbtn" id="userbtn"><span class="m-avatar">MS</span><span style="min-width:0"><b>Maxime Schifflers</b><small>maxime@meridiem.be</small></span><i data-icon="UnfoldMore" style="margin-left:auto;color:var(--m-muted-fg)"></i></button>
+        <div id="usermenu">
+          <div class="m-menu-head"><span class="m-avatar">MS</span><div><b style="font-weight:500">Maxime Schifflers</b><div class="m-muted" style="font-size:12px">Meridiem</div></div></div>
+          <button class="m-menu-item" onclick="MUI.toast('Réglages')"><i data-icon="Settings02"></i>Réglages<span class="m-kbd">⌘,</span></button>
+          <button class="m-menu-item" onclick="MUI.toast('Aide')"><i data-icon="HelpCircle"></i>Aide</button>
+          <div class="m-menu-sep"></div>
+          <button class="m-menu-item is-danger" onclick="MUI.toast('Déconnexion', { description: 'Désactivée dans la démo' })"><i data-icon="Logout01"></i>Se déconnecter</button>
+        </div>
       </div>
-      <div style="position:relative"><canvas id="city"></canvas><div style="position:absolute;inset:0 auto 0 0;width:40%;background:linear-gradient(90deg,#fff,transparent)"></div></div>
-    </section>
-    <section class="kpis m-stagger">
-      <div class="m-card m-card-hover m-card-body"><div class="m-muted">À valider</div><div class="m-kpi-value">12</div><div class="m-muted" style="font-size:12px">dont 3 urgentes</div></div>
-      <div class="m-card m-card-hover m-card-body"><div class="m-muted">Traitées aujourd'hui</div><div class="m-kpi-value">33</div><div class="m-muted" style="font-size:12px">8 de plus qu'hier</div></div>
-      <div class="m-card m-card-hover m-card-body"><div class="m-muted">Délai moyen</div><div class="m-kpi-value">1 h 12</div><div class="m-muted" style="font-size:12px">objectif : moins de 2 h</div></div>
-    </section>
-    <section class="m-card" style="overflow:hidden">
-      <table class="m-table">
-        <thead><tr><th>Demande</th><th>Reçue</th><th class="m-r">Montant</th><th>Statut</th></tr></thead>
-        <tbody>
-          <tr aria-selected="true"><td><b style="font-weight:500">Devis 12 000 bocaux 370 ml</b><div class="m-muted" style="font-size:12px">D-2611 · Brasserie de Waremme</div></td><td class="m-mono m-muted">09:12</td><td class="m-r m-num">8 640,00 €</td><td><span class="m-badge is-wait">À valider</span></td></tr>
-          <tr><td><b style="font-weight:500">Retard de livraison</b><div class="m-muted" style="font-size:12px">D-2610 · Cartonnages Dumont</div></td><td class="m-mono m-muted">08:47</td><td class="m-r m-muted">-</td><td><span class="m-badge is-crit">Urgent</span></td></tr>
-          <tr><td><b style="font-weight:500">Commande récurrente</b><div class="m-muted" style="font-size:12px">D-2609 · Menuiserie Halleux</div></td><td class="m-mono m-muted">08:30</td><td class="m-r m-num">2 315,40 €</td><td><span class="m-badge is-ok">Traitée</span></td></tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+    </div>
+  </aside>
+  <main class="main m-stagger" id="main"></main>
 </div>
 <script src="icons.js"></script>
 <script src="art.js"></script>
+<script src="meridiem.js"></script>
 <script>
-  MeridiemIcons.hydrate();
-  var img = new Image(); img.onload = function () { MeridiemArt.ditherImage(document.getElementById("city"), img, { cell: 2, focusY: 0.5, lift: 0.12, contrast: 1.15, reveal: 1.4, palette: ["#6e4226", "#b98259", "#e8d6c0", "#ffffff"] }); };
-  img.src = "../public/assets/ville-europe.jpg";
+  MUI.citySrc = "../public/assets/ville-europe.jpg";
+  var main = document.getElementById("main");
+  main.innerHTML =
+    MUI.banner({ eyebrow: "Bonjour Maxime", title: "Votre journée", sub: "dimanche 4 octobre · 51 choses à valider · 2 agents actifs", actions: '<button class="m-btn m-btn-primary m-btn-sm" onclick="MUI.toast(\'Ouverture des tâches\', { tone: \'ok\' })">Traiter les demandes</button><button class="m-btn m-btn-ghost m-btn-sm">Voir le CRM</button>' }) +
+    '<div class="m-kpis">' +
+      MUI.kpi({ label: "Besoin de toi", value: "51", note: "15 tâches · 20 retards", kind: "bars" }) +
+      MUI.kpi({ label: "Pipeline en jeu · 12 mois", value: "319 k€", note: "46 deals ouverts", kind: "line" }) +
+      MUI.kpi({ label: "Gagné · 12 mois", value: "231 k€", note: "29 deals gagnés ou livrés", kind: "rings" }) +
+      MUI.kpi({ label: "Activité des agents", value: "2", note: "2 tâches en cours", kind: "cubes" }) +
+    "</div>" +
+    '<div class="row2"><div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Activité, 14 derniers jours</h3><p class="m-card-desc">tâches créées et clôturées</p></div></div><div class="m-card-body"><div id="area"></div></div></div>' +
+    '<div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Qualité</h3><p class="m-card-desc">correctifs acceptés</p></div></div><div class="m-card-body" style="display:flex;justify-content:center"><div id="radial"></div></div></div></div>' +
+    '<div class="row2b"><div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Tâches par statut</h3><p class="m-card-desc">sur 30 jours</p></div></div><div class="m-card-body"><div id="cols"></div></div></div>' +
+    '<div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Répartition du pipeline</h3><p class="m-card-desc">montants one-shot</p></div></div><div class="m-card-body"><div id="donut"></div></div></div></div>' +
+    '<div class="m-card">' + MUI.empty({ icon: "CheckList", title: "Rien d'autre en attente", text: "Les tâches terminées apparaissent ici.", action: '<button class="m-btn m-btn-sm">Voir l\'historique</button>' }) + "</div>" +
+    MUI.ctaBand({ title: "Tout tourne.", text: "16 contrôles au vert, contrôlé à 18:26.", action: '<button class="m-btn m-btn-primary m-btn-sm">Voir la santé</button>' });
+  var labels = [], cr = [], cl = [];
+  for (var i = 13; i >= 0; i--) { var d = new Date(Date.now() - i * 864e5); labels.push(d.toLocaleDateString("fr-BE", { day: "numeric", month: "short" })); cr.push(Math.round(8 + 8 * Math.abs(Math.sin(i / 2)))); cl.push(Math.round(6 + 7 * Math.abs(Math.sin(i / 2 + 0.6)))); }
+  MUI.area(document.getElementById("area"), { labels: labels, series: [{ name: "Créées", values: cr, color: "#3F6FB0" }, { name: "Clôturées", values: cl, color: "#AA4F13" }] });
+  MUI.radial(document.getElementById("radial"), { value: 67, sub: "objectif : 70 %" });
+  MUI.columns(document.getElementById("cols"), { name: "Tâches", data: [{ label: "À faire", value: 12 }, { label: "En cours", value: 4 }, { label: "Besoin de moi", value: 15 }, { label: "Terminées", value: 41 }] });
+  MUI.donut(document.getElementById("donut"), { total: "319 k€", sub: "pipeline actif", format: function (v) { return Math.round(v / 1000) + " k€"; }, segments: [{ label: "Découverte", value: 98000 }, { label: "Offre et négociation", value: 152000 }, { label: "Gagné", value: 69000 }] });
+  MUI.bind(document);
+  MUI.navPill(document.getElementById("nav"));
+  MUI.menu(document.getElementById("userbtn"), document.getElementById("usermenu"), { side: "top" });
+  document.querySelectorAll("#nav .m-nav-item").forEach(function (a) { a.addEventListener("click", function () { document.querySelectorAll("#nav .m-nav-item").forEach(function (x) { x.classList.toggle("is-active", x === a); }); main.classList.remove("m-view-in"); void main.offsetWidth; main.classList.add("m-view-in"); }); });
 </script>
 </body>
 </html>

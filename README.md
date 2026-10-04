@@ -8,7 +8,7 @@ Le design system de [Meridiem](https://www.meridiem.be) : un socle commun pour l
 | Dossier | Contenu | Pour |
 |---|---|---|
 | `registry.json`, `public/r/` | registre shadcn : thème, styles, briques de marque, carte animée, graphiques, table, plateforme type, landing | projets React (Vite, Next) |
-| `vanilla/` | `olympe.css` (classes `.m-*`), `icons.js` (116 icônes en SVG), `art.js` (visuels de marque), `demo.html` | pages sans framework |
+| `vanilla/` | `olympe.css` (classes `.m-*`), `meridiem.js` (les blocs : cartes animées, graphiques, bandeau ville, points animés, menu, pastille, toasts, états vides), `icons.js` (116 icônes), `art.js` (moteur de visuels), `demo.html` | pages sans framework |
 | `tokens/` | jetons au format DTCG | tout outil (Figma, Style Dictionary, documents) |
 | `src/` | la démo : plateforme interactive, landing, kit de référence | consulter, copier |
 | `DESIGN.md` | les règles, à lire avant toute interface | humains et agents |
@@ -45,7 +45,17 @@ Puis importer les styles dans le CSS principal : `@import "./styles/olympe.css";
   <script>MeridiemIcons.hydrate()</script>
 </body>
 ```
-Voir `vanilla/demo.html`.
+Les blocs du design system existent aussi sans framework (`vanilla/meridiem.js`, objet `MUI`) :
+
+| Bloc | Appel |
+|---|---|
+| Carte indicateur animée | `MUI.kpi({ label, value, note, kind: "bars" })` puis `MUI.bind(racine)` |
+| Graphiques | `MUI.area(el, …)`, `MUI.columns(el, …)`, `MUI.donut(el, …)`, `MUI.radial(el, …)` |
+| Bandeau ville en points, bloc à points animés | `MUI.banner({ … })`, `MUI.ctaBand({ … })` |
+| Menu du compte, pastille de navigation | `MUI.menu(bouton, panneau, { side: "top" })`, `MUI.navPill(nav)` |
+| Toasts, état vide, badge | `MUI.toast(titre, { description })`, `MUI.empty({ … })`, `MUI.badge(statut, texte)` |
+
+Exemple complet : `vanilla/demo.html` (à servir en http, pas en file://).
 
 ## Lancer la démo
 ```bash

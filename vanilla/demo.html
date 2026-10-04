@@ -23,8 +23,8 @@
     <nav class="nav" id="nav">
       <div class="m-nav-label">Pilotage</div>
       <a class="m-nav-item is-active"><i data-icon="DashboardSquare01"></i>Tableau de bord</a>
-      <a class="m-nav-item"><i data-icon="Kanban"></i>Tâches<span class="m-count">26</span></a>
-      <a class="m-nav-item"><i data-icon="Message01"></i>Messages<span class="m-count">104</span></a>
+      <a class="m-nav-item"><i data-icon="Kanban"></i>Tâches<span class="m-count">8</span></a>
+      <a class="m-nav-item"><i data-icon="Message01"></i>Messages<span class="m-count">3</span></a>
       <div class="m-nav-label">Commercial</div>
       <a class="m-nav-item"><i data-icon="Analytics01"></i>CRM<span class="m-count">9</span></a>
       <a class="m-nav-item"><i data-icon="Folder01"></i>Projets</a>
@@ -55,11 +55,11 @@
   MUI.citySrc = "../public/assets/ville-europe.jpg";
   var main = document.getElementById("main");
   main.innerHTML =
-    MUI.banner({ eyebrow: "Bonjour Maxime", title: "Votre journée", sub: "dimanche 4 octobre · 51 choses à valider · 2 agents actifs", actions: '<button class="m-btn m-btn-primary m-btn-sm" onclick="MUI.toast(\'Ouverture des tâches\', { tone: \'ok\' })">Traiter les demandes</button><button class="m-btn m-btn-ghost m-btn-sm">Voir le CRM</button>' }) +
+    MUI.banner({ eyebrow: "Bonjour Maxime", title: "Votre journée", sub: "lundi 5 octobre · 12 choses à valider · 2 agents actifs", actions: '<button class="m-btn m-btn-primary m-btn-sm" onclick="MUI.toast(\'Ouverture des tâches\', { tone: \'ok\' })">Traiter les demandes</button><button class="m-btn m-btn-ghost m-btn-sm">Voir le CRM</button>' }) +
     '<div class="m-kpis">' +
-      MUI.kpi({ label: "Besoin de toi", value: "51", note: "15 tâches · 20 retards", kind: "bars" }) +
-      MUI.kpi({ label: "Pipeline en jeu · 12 mois", value: "319 k€", note: "46 deals ouverts", kind: "line" }) +
-      MUI.kpi({ label: "Gagné · 12 mois", value: "231 k€", note: "29 deals gagnés ou livrés", kind: "rings" }) +
+      MUI.kpi({ label: "Besoin de toi", value: "12", note: "8 tâches · 4 retards", kind: "bars" }) +
+      MUI.kpi({ label: "Pipeline en jeu · 12 mois", value: "184 k€", note: "27 affaires ouvertes", kind: "line" }) +
+      MUI.kpi({ label: "Gagné · 12 mois", value: "96 k€", note: "14 affaires gagnées", kind: "rings" }) +
       MUI.kpi({ label: "Activité des agents", value: "2", note: "2 tâches en cours", kind: "cubes" }) +
     "</div>" +
     '<div class="row2"><div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Activité, 14 derniers jours</h3><p class="m-card-desc">tâches créées et clôturées</p></div></div><div class="m-card-body"><div id="area"></div></div></div>' +
@@ -67,13 +67,13 @@
     '<div class="row2b"><div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Tâches par statut</h3><p class="m-card-desc">sur 30 jours</p></div></div><div class="m-card-body"><div id="cols"></div></div></div>' +
     '<div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Répartition du pipeline</h3><p class="m-card-desc">montants one-shot</p></div></div><div class="m-card-body"><div id="donut"></div></div></div></div>' +
     '<div class="m-card">' + MUI.empty({ icon: "CheckList", title: "Rien d'autre en attente", text: "Les tâches terminées apparaissent ici.", action: '<button class="m-btn m-btn-sm">Voir l\'historique</button>' }) + "</div>" +
-    MUI.ctaBand({ title: "Tout tourne.", text: "16 contrôles au vert, contrôlé à 18:26.", action: '<button class="m-btn m-btn-primary m-btn-sm">Voir la santé</button>' });
+    MUI.ctaBand({ title: "Tout tourne.", text: "12 contrôles au vert, contrôlé à 09:30.", action: '<button class="m-btn m-btn-primary m-btn-sm">Voir la santé</button>' });
   var labels = [], cr = [], cl = [];
   for (var i = 13; i >= 0; i--) { var d = new Date(Date.now() - i * 864e5); labels.push(d.toLocaleDateString("fr-BE", { day: "numeric", month: "short" })); cr.push(Math.round(8 + 8 * Math.abs(Math.sin(i / 2)))); cl.push(Math.round(6 + 7 * Math.abs(Math.sin(i / 2 + 0.6)))); }
   MUI.area(document.getElementById("area"), { labels: labels, series: [{ name: "Créées", values: cr, color: "#3F6FB0" }, { name: "Clôturées", values: cl, color: "#AA4F13" }] });
   MUI.radial(document.getElementById("radial"), { value: 67, sub: "objectif : 70 %" });
   MUI.columns(document.getElementById("cols"), { name: "Tâches", data: [{ label: "À faire", value: 12 }, { label: "En cours", value: 4 }, { label: "Besoin de moi", value: 15 }, { label: "Terminées", value: 41 }] });
-  MUI.donut(document.getElementById("donut"), { total: "319 k€", sub: "pipeline actif", format: function (v) { return Math.round(v / 1000) + " k€"; }, segments: [{ label: "Découverte", value: 98000 }, { label: "Offre et négociation", value: 152000 }, { label: "Gagné", value: 69000 }] });
+  MUI.donut(document.getElementById("donut"), { total: "184 k€", sub: "pipeline actif", format: function (v) { return Math.round(v / 1000) + " k€"; }, segments: [{ label: "Découverte", value: 52000 }, { label: "Offre et négociation", value: 88000 }, { label: "Gagné", value: 44000 }] });
   MUI.bind(document);
   MUI.navPill(document.getElementById("nav"));
   MUI.menu(document.getElementById("userbtn"), document.getElementById("usermenu"), { side: "top" });

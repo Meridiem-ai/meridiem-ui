@@ -333,6 +333,44 @@ html.m-dialog-lock { overflow: hidden; }
 .m-switch:disabled { opacity: .5; cursor: not-allowed; }
 .m-tabs button.active { background: var(--m-card); color: var(--m-fg); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
 
+/* Barre d'actions (MUI.actionBar) : décision à gauche, suivi à droite, boutons de même hauteur */
+.m-ab { container-type: inline-size; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--m-border); }
+.m-ab-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 16px; }
+.m-ab-dec { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
+.m-ab-prompt { font-size: 13.5px; font-weight: 600; color: var(--m-fg); }
+.m-ab-btns, .m-ab-follow, .m-ab-lead { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.m-ab-follow { margin-left: auto; }
+.m-ab .m-ab-btn { gap: 7px; }
+.m-ab.is-md .m-ab-btn { height: 36px; padding: 0 14px; font-size: 13.5px; }
+.m-ab.is-md .m-ab-more { width: 36px; padding: 0; }
+.m-ab.is-sm { margin-top: 10px; padding-top: 10px; }
+.m-ab.is-sm .m-ab-prompt { font-size: 12.5px; }
+.m-ab.is-sm .m-ab-btn { height: 30px; padding: 0 10px; font-size: 12.5px; gap: 6px; }
+.m-ab.is-sm .m-ab-more { width: 30px; padding: 0; }
+.m-ab-btn.is-pressed { background: var(--m-sidebar-accent); border-color: var(--m-input); }
+.m-ab-status { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--m-muted-fg); }
+.m-ab-note { display: inline-flex; align-items: center; gap: 6px; padding: 0 6px; font-size: 12.5px; color: var(--m-muted-fg); }
+.m-ab-morewrap { position: relative; }
+.m-ab-menu.m-menu, .m-ab-menu.m-menu[data-side] { left: auto; right: 0; }
+.m-ab-menu.m-menu[data-side="top"] { transform-origin: bottom right; } .m-ab-menu.m-menu[data-side="bottom"] { transform-origin: top right; }
+.m-ab-panel { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.m-ab-panel-t { font: 500 11px/1.3 var(--m-font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--m-muted-fg); }
+.m-ab-panel textarea { width: 100%; box-sizing: border-box; min-height: 76px; padding: 8px 10px; border: 1px solid var(--m-input); border-radius: 8px; background: var(--m-card); color: var(--m-fg); font: 13.5px/1.5 var(--m-font-sans); resize: vertical; }
+.m-ab-panel textarea:focus { outline: none; border-color: var(--m-ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--m-ring) 25%, transparent); }
+.m-ab-panel-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.m-ab.is-md .m-ab-panel-acts .m-btn { height: 36px; padding: 0 14px; } .m-ab.is-sm .m-ab-panel-acts .m-btn { height: 30px; }
+@container (max-width: 520px) {
+  .m-ab-row { flex-direction: column; align-items: stretch; }
+  .m-ab-dec { flex-direction: column; align-items: stretch; gap: 8px; }
+  .m-ab-btns .m-ab-btn { flex: 1 1 auto; }
+  .m-ab-follow { margin-left: 0; }
+}
+/* Bouton occupé (MUI.busy) */
+.m-btn.is-busy { position: relative; color: transparent !important; pointer-events: none; }
+.m-btn.is-busy > * { visibility: hidden; }
+.m-btn.is-busy::after { content: ""; position: absolute; inset: 0; margin: auto; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--m-border); border-top-color: var(--m-fg); animation: m-spin .7s linear infinite; }
+.m-btn-primary.is-busy::after { border-color: rgb(255 255 255 / .4); border-top-color: #fff; }
+
 /* Changement de vue */
 @keyframes m-view-in { from { opacity: 0; transform: translateY(10px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
 .m-view-in { animation: m-view-in .28s cubic-bezier(.2, .8, .2, 1); }

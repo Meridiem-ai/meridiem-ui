@@ -2,7 +2,7 @@
    (Command Center, outils internes). Même rendu que la librairie React.
    Dépend de olympe.css, et pour les visuels de marque de art.js (window.MeridiemArt) et icons.js.
    API : window.MUI = { kpi, kpis, iso, bind, area, columns, donut, radial, banner, ctaBand, empty, badge,
-                        toast, menu, navPill, palette, dialog, dotChart, dotField, city } */
+                        toast, menu, navPill, palette, dialog, actionBar, busy, dotChart, dotField, city } */
 (function () {
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -520,6 +520,56 @@
   // Échap ferme la fenêtre du dessus (une seule à la fois)
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && DLG_OPEN.length && !document.querySelector(".m-pal-back.is-open")) { e.stopPropagation(); DLG_OPEN[DLG_OPEN.length - 1].close(); } }, true);
 
+  /* Barre d'actions : la même partout, la relation entre les boutons se lit d'un coup d'œil.
+     MUI.actionBar({ size, prompt, decision, follow, more, lead, status, panel, label, moreLabel }) → HTML
+     - À GAUCHE, le groupe DÉCISION : une phrase courte en gras (prompt) puis les boutons (decision) ;
+       le principal est `kind: "primary"` (terracotta, un seul), les autres en contour.
+       Sans décision : `status` (badge + texte, ex. « Confirmé à 23:41 ») ou `lead` (liens fantômes).
+     - À DROITE, le groupe SUIVI (follow, ex. « Marquer lu ») puis « ⋯ » (more) : MUI.menu, branché
+       tout seul au premier clic, ouvert vers le haut s'il manque de place en bas.
+     - `panel` : HTML rendu juste sous la barre (zone de saisie d'un retour ou d'une réponse).
+     size : "md" (boutons 36 px, carte) ou "sm" (30 px, listes, colonnes). Sous 520 px de large, la
+     barre passe sur deux lignes, décision au-dessus.
+     bouton : { label, icon, onclick (chaîne), kind: "primary" | "outline" | "ghost" | "note", pressed, title, disabled }
+     entrée du menu : { label, icon, onclick, danger } */
+  function actionBar(o) {
+    o = o || {};
+    var sm = o.size === "sm", isz = sm ? 14 : 16;
+    function ic(n) { return n && window.meridiemIcon ? window.meridiemIcon(n, isz) : ""; }
+    function btn(b) {
+      var k = b.kind || "outline";
+      if (k === "note") return '<span class="m-ab-note"' + (b.title ? ' title="' + esc(b.title) + '"' : "") + ">" + ic(b.icon) + "<span>" + esc(b.label) + "</span></span>";
+      return '<button type="button" class="m-btn m-ab-btn' + (k === "primary" ? " m-btn-primary" : k === "ghost" ? " m-btn-ghost" : "") + (b.pressed ? " is-pressed" : "") + '"' +
+        (b.pressed ? ' aria-pressed="true"' : "") + (b.title ? ' title="' + esc(b.title) + '"' : "") + (b.onclick ? ' onclick="' + esc(b.onclick) + '"' : "") + (b.disabled ? " disabled" : "") + ">" +
+        ic(b.icon) + "<span>" + esc(b.label) + "</span></button>";
+    }
+    var left = "";
+    if (o.status) left = '<div class="m-ab-status">' + badge(o.status.tone || "ok", o.status.word) + (o.status.text ? "<span>" + esc(o.status.text) + "</span>" : "") + "</div>";
+    else if ((o.decision || []).length) left = '<div class="m-ab-dec">' + (o.prompt ? '<span class="m-ab-prompt">' + esc(o.prompt) + "</span>" : "") + '<div class="m-ab-btns">' + o.decision.map(btn).join("") + "</div></div>";
+    else if ((o.lead || []).length) left = '<div class="m-ab-lead">' + o.lead.map(function (b) { return btn(Object.assign({ kind: "ghost" }, b)); }).join("") + "</div>";
+    var more = (o.more || []).length ? '<div class="m-ab-morewrap"><button type="button" class="m-btn m-btn-icon m-ab-btn m-ab-more" aria-haspopup="menu" aria-expanded="false" aria-label="' + esc(o.moreLabel || "Plus d'actions") + '" title="' + esc(o.moreLabel || "Plus d'actions") + '">' + ic("MoreHorizontal") + "</button>" +
+      '<div class="m-ab-menu" role="menu">' + o.more.map(function (m) { return '<button type="button" class="m-menu-item' + (m.danger ? " is-danger" : "") + '"' + (m.onclick ? ' onclick="' + esc(m.onclick) + '"' : "") + ">" + (m.icon && window.meridiemIcon ? window.meridiemIcon(m.icon, 16) : "") + "<span>" + esc(m.label) + "</span></button>"; }).join("") + "</div></div>" : "";
+    var right = (o.follow || []).map(btn).join("") + more;
+    return '<div class="m-ab is-' + (sm ? "sm" : "md") + '" role="group"' + (o.label ? ' aria-label="' + esc(o.label) + '"' : "") + ">" +
+      '<div class="m-ab-row">' + (left || '<span class="m-ab-void"></span>') + (right ? '<div class="m-ab-follow">' + right + "</div>" : "") + "</div>" +
+      (o.panel ? '<div class="m-ab-panel">' + o.panel + "</div>" : "") + "</div>";
+  }
+  // « ⋯ » des barres : branché au premier clic (les barres sont souvent rendues en HTML par des pages qui se rafraîchissent)
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest(".m-ab-more") : null; if (!b) return;
+    var panel = b.nextElementSibling; if (!panel) return;
+    if (!b.hasAttribute("data-bound")) { b.setAttribute("data-bound", "1"); menu(b, panel, { side: "bottom" }); }
+    var r = b.getBoundingClientRect();
+    panel.setAttribute("data-side", window.innerHeight - r.bottom < 260 && r.top > 260 ? "top" : "bottom");
+  }, true);
+
+  /* Bouton occupé pendant une action : MUI.busy(bouton, () => promesse). Largeur gardée, petit cercle, clic bloqué. */
+  function busy(el, fn) {
+    if (!el) return Promise.resolve().then(fn);
+    el.style.minWidth = el.offsetWidth + "px"; el.classList.add("is-busy"); el.setAttribute("aria-busy", "true");
+    return Promise.resolve().then(fn).finally(function () { el.classList.remove("is-busy"); el.style.minWidth = ""; el.removeAttribute("aria-busy"); });
+  }
+
   window.MUI = { kpi: kpi, kpis: kpis, iso: iso, bind: bind, area: area, columns: columns, donut: donut, radial: radial, banner: banner, ctaBand: ctaBand, empty: empty, badge: badge,
-    toast: toast, menu: menu, navPill: navPill, palette: palette, dialog: dialog, dotChart: dotChart, dotField: dotField, city: city, CHART: CHART, citySrc: null };
+    toast: toast, menu: menu, navPill: navPill, palette: palette, dialog: dialog, actionBar: actionBar, busy: busy, dotChart: dotChart, dotField: dotField, city: city, CHART: CHART, citySrc: null };
 })();

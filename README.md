@@ -66,6 +66,7 @@ Les blocs du design system existent aussi sans framework (`vanilla/meridiem.js`,
 | Bandeau ville en points, bloc à points animés | `MUI.banner({ … })`, `MUI.ctaBand({ … })` |
 | Menu du compte, pastille de navigation | `MUI.menu(bouton, panneau, { side: "top" })`, `MUI.navPill(nav)` |
 | Palette de commandes ⌘K, recherche dans le contenu | `MUI.palette({ items, sources, hotkey: true })` (détail ci-dessous) |
+| Barre d'actions (décision à gauche, suivi à droite, « ⋯ ») | `MUI.actionBar({ size, prompt, decision, follow, more, status, panel })` (détail ci-dessous) ; `MUI.busy(bouton, fn)` pour l'état de chargement |
 | Fenêtre centrée (réglages, confirmation) | `MUI.dialog({ title, description, content, footer })` puis `.open()` ; interrupteur `<input type="checkbox" class="m-switch">`, lignes `.m-section` et `.m-setting` |
 | Toasts, état vide, badge | `MUI.toast(titre, { description })`, `MUI.empty({ … })`, `MUI.badge(statut, texte)` |
 
@@ -93,6 +94,24 @@ const pal = MUI.palette({
 Recherche sans accents ni casse, mot à mot (tous les mots doivent figurer dans `label`, `sub`, `keywords` ou `group`),
 classement par pertinence (début du libellé d'abord), termes en surbrillance, ligne « Chargement… » tant qu'une source
 charge, flèches puis Entrée, Échap. `pal.open()`, `pal.close()`, `pal.refresh()`.
+
+### Barre d'actions
+```js
+el.innerHTML += MUI.actionBar({
+  size: "md",                                        // "sm" : boutons 30 px (listes, colonnes)
+  prompt: "L'agent attend ta décision",
+  decision: [
+    { label: "Confirmer", icon: "Tick02", kind: "primary", onclick: "confirmer(this)" },   // un seul terracotta
+    { label: "Donner un retour", icon: "PencilEdit02", onclick: "ouvrirRetour()" },
+  ],
+  follow: [{ label: "Marquer lu", icon: "MailOpen01", onclick: "marquerLu()" }],
+  more: [{ label: "Discuter avec l'agent", icon: "Message01", onclick: "discuter()" }],
+  // status: { tone: "ok", word: "Confirmé", text: "à 23:41" }  remplace le groupe décision une fois fait
+  // panel: '<textarea>…</textarea><div class="m-ab-panel-acts">…</div>'  zone ouverte sous la barre
+});
+```
+Même hauteur pour tous les boutons, libellés avec icône, ordre fixe ; sous 520 px de large la barre passe sur deux lignes,
+décision au-dessus. Le « ⋯ » est un `MUI.menu` branché tout seul au premier clic.
 
 ### Fenêtre centrée
 ```js

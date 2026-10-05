@@ -66,6 +66,9 @@
     '<div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Qualité</h3><p class="m-card-desc">correctifs acceptés</p></div></div><div class="m-card-body" style="display:flex;justify-content:center"><div id="radial"></div></div></div></div>' +
     '<div class="row2b"><div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Tâches par statut</h3><p class="m-card-desc">sur 30 jours</p></div></div><div class="m-card-body"><div id="cols"></div></div></div>' +
     '<div class="m-card"><div class="m-card-head"><div><h3 class="m-card-title">Répartition du pipeline</h3><p class="m-card-desc">montants one-shot</p></div></div><div class="m-card-body"><div id="donut"></div></div></div></div>' +
+    '<div class="m-card" style="padding:18px 20px"><h3 class="m-card-title">Relances devis de septembre</h3><p class="m-card-desc">4 brouillons prêts, rien ne part sans toi.</p>' +
+      MUI.actionBar({ prompt: "L'agent attend ta décision", decision: [{ label: "Confirmer", icon: "Tick02", kind: "primary", onclick: "MUI.toast('Confirmé, l\\'agent reprend', { tone: 'ok' })" }, { label: "Donner un retour", icon: "PencilEdit02" }],
+        follow: [{ label: "Marquer lu", icon: "MailOpen01" }], more: [{ label: "Discuter avec l'agent", icon: "Message01" }, { label: "C'est réglé", icon: "CheckmarkCircle02" }] }) + "</div>" +
     '<div class="m-card">' + MUI.empty({ icon: "CheckList", title: "Rien d'autre en attente", text: "Les tâches terminées apparaissent ici.", action: '<button class="m-btn m-btn-sm">Voir l\'historique</button>' }) + "</div>" +
     MUI.ctaBand({ title: "Tout tourne.", text: "12 contrôles au vert, contrôlé à 09:30.", action: '<button class="m-btn m-btn-primary m-btn-sm">Voir la santé</button>' });
   var labels = [], cr = [], cl = [];

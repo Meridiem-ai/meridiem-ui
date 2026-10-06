@@ -4,7 +4,7 @@ import type { Status } from "@/components/meridiem/brand"
 export type Request = { id: string; title: string; client: string; contact: string; type: string; at: string; amount: string; status: Status; label: string; owner: string }
 
 export const REQUESTS: Request[] = [
-  { id: "D-2611", title: "Devis 12 000 bocaux 370 ml", client: "Brasserie de Waremme", contact: "Marc Lejeune", type: "Devis", at: "09:12", amount: "8 640,00 €", status: "wait", label: "À valider", owner: "JR" },
+  { id: "D-2611", title: "Devis 12 000 bocaux 370 ml", client: "Brasserie du Condroz", contact: "Marc Lejeune", type: "Devis", at: "09:12", amount: "8 640,00 €", status: "wait", label: "À valider", owner: "JR" },
   { id: "D-2610", title: "Retard de livraison, commande 4512", client: "Cartonnages Dumont", contact: "Sophie Dumont", type: "Réclamation", at: "08:47", amount: "", status: "crit", label: "Urgent", owner: "TB" },
   { id: "D-2609", title: "Commande récurrente d'octobre", client: "Menuiserie Halleux", contact: "Luc Halleux", type: "Commande", at: "08:30", amount: "2 315,40 €", status: "ok", label: "Traitée", owner: "JR" },
   { id: "D-2608", title: "Nouvelle adresse de facturation", client: "Fromagerie du Condroz", contact: "Anne Collard", type: "Administratif", at: "08:02", amount: "", status: "ok", label: "Traitée", owner: "IA" },
@@ -16,7 +16,7 @@ export const REQUESTS: Request[] = [
 
 export type Client = { id: string; name: string; city: string; contact: string; sector: string; revenue: number; requests: number; status: "Actif" | "Prospect" | "En pause" }
 export const CLIENTS: Client[] = [
-  { id: "c1", name: "Brasserie de Waremme", city: "Waremme", contact: "Marc Lejeune", sector: "Boissons", revenue: 48200, requests: 31, status: "Actif" },
+  { id: "c1", name: "Brasserie du Condroz", city: "Ciney", contact: "Marc Lejeune", sector: "Boissons", revenue: 48200, requests: 31, status: "Actif" },
   { id: "c2", name: "Biscuiterie Destrée", city: "Gembloux", contact: "Claire Destrée", sector: "Alimentaire", revenue: 36950, requests: 22, status: "Actif" },
   { id: "c3", name: "Domaine du Chenoy", city: "Émines", contact: "Éric Lambotte", sector: "Vins", revenue: 29400, requests: 18, status: "Actif" },
   { id: "c4", name: "Confiturerie Gérard", city: "Huy", contact: "Henri Gérard", sector: "Alimentaire", revenue: 21780, requests: 15, status: "Actif" },
@@ -24,12 +24,12 @@ export const CLIENTS: Client[] = [
   { id: "c6", name: "Fromagerie du Condroz", city: "Ciney", contact: "Anne Collard", sector: "Alimentaire", revenue: 15120, requests: 9, status: "En pause" },
   { id: "c7", name: "Cartonnages Dumont", city: "Liège", contact: "Sophie Dumont", sector: "Emballage", revenue: 12640, requests: 14, status: "Actif" },
   { id: "c8", name: "Transports Remy", city: "Namur", contact: "Paul Remy", sector: "Logistique", revenue: 6200, requests: 5, status: "Prospect" },
-  { id: "c9", name: "Savonnerie de Hesbaye", city: "Waremme", contact: "Inès Moreau", sector: "Cosmétique", revenue: 4800, requests: 3, status: "Prospect" },
+  { id: "c9", name: "Savonnerie de Hesbaye", city: "Ciney", contact: "Inès Moreau", sector: "Cosmétique", revenue: 4800, requests: 3, status: "Prospect" },
   { id: "c10", name: "Distillerie Mosane", city: "Andenne", contact: "Victor Pirard", sector: "Boissons", revenue: 0, requests: 1, status: "Prospect" },
 ]
 
 export const NOTIFICATIONS = [
-  { id: 1, title: "Devis D-2611 prêt à valider", text: "Brasserie de Waremme · 8 640,00 €", at: "il y a 5 min" },
+  { id: 1, title: "Devis D-2611 prêt à valider", text: "Brasserie du Condroz · 8 640,00 €", at: "il y a 5 min" },
   { id: 2, title: "Réclamation urgente", text: "Cartonnages Dumont, commande 4512", at: "il y a 32 min" },
   { id: 3, title: "14 mails rangés par l'assistant", text: "Boîte commerciale", at: "08:15" },
 ]

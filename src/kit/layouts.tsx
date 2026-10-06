@@ -116,7 +116,7 @@ function NavNested() {
             <SidebarGroupLabel>Opérations</SidebarGroupLabel>
             <SidebarMenu>
               {[
-                { t: "Projets clients", i: Analytics01Icon, open: true, sub: ["Lambert Emballages", "Verrerie Delvaux", "Brasserie de Waremme"] },
+                { t: "Projets clients", i: Analytics01Icon, open: true, sub: ["Lambert Emballages", "Verrerie Delvaux", "Brasserie du Condroz"] },
                 { t: "Automatisations", i: WorkflowSquare01Icon, sub: ["Tri des mails", "Relances", "Devis"] },
                 { t: "Agents", i: Robot01Icon, sub: ["Agent commercial", "Agent administratif"] },
                 { t: "Connexions", i: Plug01Icon, sub: ["Outlook", "Odoo", "Teams"] },

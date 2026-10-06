@@ -48,7 +48,7 @@ export function Typography() {
           ["Titre de carte · EB Garamond 18", <div className="font-heading text-lg">Devis 12 000 bocaux 370 ml</div>],
           ["Chiffre clé · EB Garamond 32", <div className="num font-heading text-[2rem]">8 640,00 €</div>],
           ["Texte · Geist 14", <p className="max-w-prose text-sm">L'assistant a préparé une réponse pour 9 demandes. Rien ne part chez le client sans votre validation.</p>],
-          ["Texte secondaire · Geist 12", <p className="text-xs text-muted-foreground">Brasserie de Waremme · Marc Lejeune · reçue à 09:12</p>],
+          ["Texte secondaire · Geist 12", <p className="text-xs text-muted-foreground">Brasserie du Condroz · Marc Lejeune · reçue à 09:12</p>],
           ["Étiquette · Geist Mono 11, capitales", <div className="eyebrow">Demande du client</div>],
           ["Référence · Geist Mono 12", <div className="font-mono text-xs text-muted-foreground">D-2611 · 09:12</div>],
         ].map(([l, el]) => (

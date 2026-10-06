@@ -1,6 +1,8 @@
 # Changelog
 
 ## Non publié · 2026-10-06
+- **Logotypes officiels** (Maxime, 06/10) : `meridiem-logo-noir.png` remplacé, `meridiem-logo-blanc.png` ajouté pour les fonds sombres (`assets.logoLight`).
+- **Plus de Waremme en avant** : pied du gabarit `landing` signé « meridiem.be · Your AI partner » (adresse retirée), clients fictifs des démos déplacés à Ciney ; règle ajoutée dans `DESIGN.md` (§ Marque).
 Retours de la première intégration dans une app Next.js 16 (espace clients `meridiem-portail`, branche `design-olympe`).
 - **`data-table`** (nouvel élément du registre) : table de données générique (TanStack + shadcn) ; colonnes, données et libellés fournis par l'app ; recherche (sur un texte choisi par ligne), tri avec flèche de sens, pagination, ligne cliquable, état vide avec « Effacer la recherche », colonnes masquables sur téléphone (`meta.className`). `ClientsTable` reste la démonstration figée ; démonstration générique ajoutée au kit (Tables).
 - **`StatusBadge`** : statut `neutral` (clos, refusé, annulé, terminé), démontré dans le kit.

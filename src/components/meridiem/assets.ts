@@ -3,7 +3,8 @@
 const BASE = "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/assets/"
 
 export const assets = {
-  logo: BASE + "meridiem-logo-noir.png",
+  logo: BASE + "meridiem-logo-noir.png",       // logotype officiel, fond clair
+  logoLight: BASE + "meridiem-logo-blanc.png", // logotype officiel, fond sombre
   mark: BASE + "meridiem-icone.png",
   city: BASE + "ville-europe.jpg",
 }

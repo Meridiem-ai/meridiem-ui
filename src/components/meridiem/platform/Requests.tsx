@@ -118,7 +118,7 @@ export default function Requests({ rows, setRows }: { rows: Request[]; setRows: 
             <CardContent className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
                 <span className="eyebrow">Demande du client</span>
-                <blockquote className="border-l-2 pl-3 text-sm text-muted-foreground">Bonjour, pourriez-vous nous faire une offre pour 12 000 bocaux 370 ml avec couvercles twist-off 70 mm, livrés début novembre à Waremme ? Merci, Marc</blockquote>
+                <blockquote className="border-l-2 pl-3 text-sm text-muted-foreground">Bonjour, pourriez-vous nous faire une offre pour 12 000 bocaux 370 ml avec couvercles twist-off 70 mm, livrés début novembre à Ciney ? Merci, Marc</blockquote>
               </div>
               <div className="flex flex-col gap-1.5">
                 <span className="eyebrow">Devis préparé par l'assistant</span>

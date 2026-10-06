@@ -74,7 +74,7 @@ export function Forms() {
       <div className="grid gap-5 md:grid-cols-2">
         <Demo label="Champs">
           <FieldGroup>
-            <Field><FieldLabel htmlFor="k-name">Nom du client</FieldLabel><Input id="k-name" placeholder="Brasserie de Waremme" /></Field>
+            <Field><FieldLabel htmlFor="k-name">Nom du client</FieldLabel><Input id="k-name" placeholder="Brasserie du Condroz" /></Field>
             <Field><FieldLabel htmlFor="k-amount">Montant</FieldLabel><InputGroup><InputGroupInput id="k-amount" defaultValue="8 640,00" className="num" /><InputGroupAddon align="inline-end"><InputGroupText>€ HTVA</InputGroupText></InputGroupAddon></InputGroup></Field>
             <Field data-invalid="true"><FieldLabel htmlFor="k-mail">Adresse mail</FieldLabel><Input id="k-mail" aria-invalid defaultValue="marc.lejeune@" /><FieldError>Il manque le nom de domaine, par exemple marc@brasserie.be</FieldError></Field>
             <Field><FieldLabel htmlFor="k-type">Type de demande</FieldLabel><Select defaultValue="devis"><SelectTrigger id="k-type" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="devis">Devis</SelectItem><SelectItem value="commande">Commande</SelectItem><SelectItem value="reclamation">Réclamation</SelectItem></SelectContent></Select></Field>
@@ -113,9 +113,9 @@ export function Navigation() {
   return (
     <KitSection id="navigation" title="Navigation et en-têtes" desc="Fil d'Ariane, en-tête de page avec ses actions, onglets, sélecteur segmenté, pagination.">
       <Demo label="En-tête de page" className="flex flex-col gap-4">
-        <Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href="#kit">Lambert Emballages</BreadcrumbLink></BreadcrumbItem><BreadcrumbSeparator /><BreadcrumbItem><BreadcrumbLink href="#kit">Clients</BreadcrumbLink></BreadcrumbItem><BreadcrumbSeparator /><BreadcrumbItem><BreadcrumbPage>Brasserie de Waremme</BreadcrumbPage></BreadcrumbItem></BreadcrumbList></Breadcrumb>
+        <Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href="#kit">Lambert Emballages</BreadcrumbLink></BreadcrumbItem><BreadcrumbSeparator /><BreadcrumbItem><BreadcrumbLink href="#kit">Clients</BreadcrumbLink></BreadcrumbItem><BreadcrumbSeparator /><BreadcrumbItem><BreadcrumbPage>Brasserie du Condroz</BreadcrumbPage></BreadcrumbItem></BreadcrumbList></Breadcrumb>
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <div><h3 className="font-heading text-3xl">Brasserie de Waremme</h3><p className="text-sm text-muted-foreground">Client depuis 2023 · Marc Lejeune · 31 demandes</p></div>
+          <div><h3 className="font-heading text-3xl">Brasserie du Condroz</h3><p className="text-sm text-muted-foreground">Client depuis 2023 · Marc Lejeune · 31 demandes</p></div>
           <div className="flex gap-2"><Button variant="outline" size="sm"><Icon icon={Mail01Icon} />Écrire</Button><Button size="sm"><Icon icon={Add01Icon} />Nouvelle demande</Button></div>
         </div>
       </Demo>
@@ -151,7 +151,7 @@ export function Feedback() {
     <KitSection id="retours" title="Retours et superpositions" desc="Chaque clic produit un effet visible : un toast, une fenêtre, un panneau, un chargement. Essayez les boutons.">
       <div className="grid gap-5 md:grid-cols-2">
         <Demo label="Toasts"><div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => toast.success("Devis envoyé à Marc Lejeune", { description: "Brasserie de Waremme · 8 640,00 € HTVA" })}>Succès</Button>
+          <Button variant="outline" onClick={() => toast.success("Devis envoyé à Marc Lejeune", { description: "Brasserie du Condroz · 8 640,00 € HTVA" })}>Succès</Button>
           <Button variant="outline" onClick={() => toast("Relances préparées", { description: "4 brouillons dans Outlook" })}>Information</Button>
           <Button variant="outline" onClick={() => toast("Client archivé", { action: { label: "Annuler", onClick: () => toast.success("Archivage annulé") } })}>Avec annulation</Button>
           <Button variant="outline" onClick={() => toast.error("Envoi impossible", { description: "La boîte Outlook est déconnectée. Reconnectez-la dans Réglages." })}>Erreur</Button>
@@ -168,21 +168,21 @@ export function Feedback() {
           </AlertDialog>
           <Sheet>
             <SheetTrigger asChild><Button variant="outline">Panneau latéral</Button></SheetTrigger>
-            <SheetContent><SheetHeader><SheetTitle className="font-heading text-2xl font-normal">Fiche client</SheetTitle><SheetDescription>Brasserie de Waremme · Waremme</SheetDescription></SheetHeader><div className="flex flex-col gap-3 px-4 text-sm"><div className="flex justify-between"><span className="text-muted-foreground">Contact</span><span>Marc Lejeune</span></div><div className="flex justify-between"><span className="text-muted-foreground">Chiffre 2026</span><span className="num">48 200 €</span></div><div className="flex justify-between"><span className="text-muted-foreground">Statut</span><StatusBadge status="ok">Actif</StatusBadge></div></div></SheetContent>
+            <SheetContent><SheetHeader><SheetTitle className="font-heading text-2xl font-normal">Fiche client</SheetTitle><SheetDescription>Brasserie du Condroz · Ciney</SheetDescription></SheetHeader><div className="flex flex-col gap-3 px-4 text-sm"><div className="flex justify-between"><span className="text-muted-foreground">Contact</span><span>Marc Lejeune</span></div><div className="flex justify-between"><span className="text-muted-foreground">Chiffre 2026</span><span className="num">48 200 €</span></div><div className="flex justify-between"><span className="text-muted-foreground">Statut</span><StatusBadge status="ok">Actif</StatusBadge></div></div></SheetContent>
           </Sheet>
           <Popover>
             <PopoverTrigger asChild><Button variant="outline">Popover</Button></PopoverTrigger>
             <PopoverContent className="w-64 text-sm"><div className="font-medium">Délai moyen</div><p className="mt-1 text-muted-foreground">Temps entre la réception d'une demande et la réponse envoyée, jours ouvrés.</p></PopoverContent>
           </Popover>
           <Tooltip><TooltipTrigger asChild><Button variant="outline">Infobulle</Button></TooltipTrigger><TooltipContent>Préparé par l'assistant à 09:12</TooltipContent></Tooltip>
-          <HoverCard><HoverCardTrigger asChild><Button variant="link">Marc Lejeune</Button></HoverCardTrigger><HoverCardContent className="w-64 text-sm"><div className="font-medium">Marc Lejeune</div><div className="text-muted-foreground">Acheteur, Brasserie de Waremme</div><div className="mt-2 text-xs text-muted-foreground">Préfère les rendez-vous le matin · vouvoiement</div></HoverCardContent></HoverCard>
+          <HoverCard><HoverCardTrigger asChild><Button variant="link">Marc Lejeune</Button></HoverCardTrigger><HoverCardContent className="w-64 text-sm"><div className="font-medium">Marc Lejeune</div><div className="text-muted-foreground">Acheteur, Brasserie du Condroz</div><div className="mt-2 text-xs text-muted-foreground">Préfère les rendez-vous le matin · vouvoiement</div></HoverCardContent></HoverCard>
         </div></Demo>
       </div>
       <div className="grid gap-5 md:grid-cols-2">
         <Demo label="Alertes" className="flex flex-col gap-3">
           <Alert><Icon icon={InformationCircleIcon} /><AlertTitle>4 relances sont prêtes</AlertTitle><AlertDescription>Elles partiront après votre validation.</AlertDescription></Alert>
           <Alert variant="destructive"><Icon icon={Alert02Icon} /><AlertTitle>Boîte Outlook déconnectée</AlertTitle><AlertDescription>Les mails ne peuvent plus être envoyés. Reconnectez-la dans Réglages.</AlertDescription></Alert>
-          <Alert className="border-ok/30 bg-ok/5 text-ok"><Icon icon={Tick02Icon} /><AlertTitle>Devis signé</AlertTitle><AlertDescription className="text-ok/80">Brasserie de Waremme a signé le devis D-2598.</AlertDescription></Alert>
+          <Alert className="border-ok/30 bg-ok/5 text-ok"><Icon icon={Tick02Icon} /><AlertTitle>Devis signé</AlertTitle><AlertDescription className="text-ok/80">Brasserie du Condroz a signé le devis D-2598.</AlertDescription></Alert>
         </Demo>
         <Demo label="Chargements" className="flex flex-col gap-5">
           <div className="flex flex-col gap-2"><div className="flex justify-between text-sm"><span>Import des factures</span><span className="num text-muted-foreground">{Math.min(p, 100)} %</span></div><Progress value={Math.min(p, 100)} /></div>

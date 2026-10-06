@@ -180,7 +180,7 @@ export default function Landing() {
           ))}
         </div>
         <div className="mx-auto flex max-w-6xl flex-wrap gap-x-5 gap-y-1 border-t px-6 py-5 text-xs text-muted-foreground">
-          <span>MERIDIEM SRL</span><span>Rue du Baloir 20, boîte 401, 4300 Waremme</span><span>TVA BE1003910507</span><span>CGV</span>
+          <span>MERIDIEM SRL</span><span>meridiem.be · Your AI partner</span><span>TVA BE1003910507</span><span>CGV</span>
         </div>
       </footer>
       <BookingDialog open={booking} onOpenChange={setBooking} />

@@ -29,6 +29,14 @@ icons: "Hugeicons free, stroke rounded, stroke 1.5"
 ## Vue d'ensemble
 Calme, lisible, sérieux, avec une touche classique : ivoire et encre, titres en serif, beaucoup d'air, ombres très douces. La couleur vit dans les visuels de marque (ville en points, champ de points) et dans une seule action par zone. Lire ce fichier avant de créer ou de modifier une interface Meridiem.
 
+## Marque
+- Logotypes officiels (fournis par Maxime le 06/10/2026) : `public/assets/meridiem-logo-noir.png` sur fond
+  clair, `public/assets/meridiem-logo-blanc.png` sur fond sombre (`assets.logo`, `assets.logoLight`). Ne pas
+  redessiner le logo, ne pas l'écrire en texte à côté : le fichier contient déjà le mot « Meridiem ».
+- Signature en pied de page : « meridiem.be · Your AI partner ». Ne jamais mettre l'adresse ni la ville
+  (Waremme) en avant dans une interface (demande de Maxime du 06/10/2026). Seul un document commercial ou
+  légal (devis, facture, CGV) porte l'adresse du siège.
+
 ## Couleurs
 - Fond de page `background`, surfaces `card`, menu de gauche `sidebar`, filets `border`.
 - `primary` (terracotta) : l'action principale de la zone, et elle seule. Les autres actions : contour (`outline`) ou fantôme (`ghost`).

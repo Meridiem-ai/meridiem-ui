@@ -1,3 +1,4 @@
+"use client"
 /* Tableau de bord : bandeau ville, indicateurs animés, graphiques, activité. */
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"

@@ -1,3 +1,4 @@
+"use client"
 /* Carte indicateur Olympe : texte à gauche, illustration animée à droite dans une boîte fixe (rien ne déborde). */
 import { useState } from "react"
 import { Card } from "@/components/ui/card"

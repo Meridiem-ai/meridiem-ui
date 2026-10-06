@@ -101,7 +101,7 @@ export function Statuses() {
   return (
     <KitSection id="statuts" title="Statuts et badges" desc="Une pastille dit une seule chose, la même partout, et porte toujours son mot.">
       <Demo><div className="flex flex-col gap-4">
-        <div className="flex flex-wrap gap-2"><StatusBadge status="ok">Traitée</StatusBadge><StatusBadge status="wait">À valider</StatusBadge><StatusBadge status="warn">Bloquée</StatusBadge><StatusBadge status="crit">Urgent</StatusBadge><StatusBadge status="info">En cours</StatusBadge></div>
+        <div className="flex flex-wrap gap-2"><StatusBadge status="ok">Traitée</StatusBadge><StatusBadge status="wait">À valider</StatusBadge><StatusBadge status="warn">Bloquée</StatusBadge><StatusBadge status="crit">Urgent</StatusBadge><StatusBadge status="info">En cours</StatusBadge><StatusBadge status="neutral">Classée</StatusBadge></div>
         <div className="flex flex-wrap gap-2"><Badge>Nouveau</Badge><Badge variant="secondary">Devis</Badge><Badge variant="outline">Brouillon</Badge><Badge variant="outline" className="num">12</Badge><Badge variant="destructive">Échec d'envoi</Badge></div>
         <div className="flex items-center gap-3 text-sm"><div className="flex -space-x-2">{["JR", "TB", "SL", "IA"].map((a) => <Avatar key={a} className="size-8 border-2 border-card"><AvatarFallback className={a === "IA" ? "bg-primary text-[10px] text-primary-foreground" : "bg-secondary text-[10px]"}>{a}</AvatarFallback></Avatar>)}</div><span className="text-muted-foreground">Avatars empilés : équipe et assistant (IA)</span></div>
       </div></Demo>

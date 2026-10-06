@@ -1,3 +1,4 @@
+"use client"
 /* Table de données (TanStack Table + shadcn) : recherche, tri, sélection, actions groupées, actions par ligne, pagination. */
 import { useState } from "react"
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type RowSelectionState, type SortingState } from "@tanstack/react-table"

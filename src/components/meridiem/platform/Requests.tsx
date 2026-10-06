@@ -1,3 +1,4 @@
+"use client"
 /* Demandes : filtres, table, détail ; valider (confirmation puis toast), modifier (panneau latéral). */
 import { useMemo, useState } from "react"
 import { Search01Icon, PencilEdit02Icon, Tick02Icon, Download01Icon } from "@hugeicons/core-free-icons"

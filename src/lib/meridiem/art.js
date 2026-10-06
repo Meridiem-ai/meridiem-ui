@@ -5,7 +5,8 @@
    - MeridiemArt.dots(canvas, opts)     champ de points animé (variante de marque, chargements)
    - MeridiemArt.dotChart(canvas, opts) graphique en points (barres faites de points), animé à l'apparition
    Respecte prefers-reduced-motion : une seule image fixe dans ce cas. */
-  const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Garde SSR : ce module est aussi évalué côté serveur dans une app Next (composants client pré-rendus).
+  const reduced = typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function rng(seed) {
     let s = seed >>> 0 || 1;
     return function () { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return ((s >>> 0) % 100000) / 100000; };

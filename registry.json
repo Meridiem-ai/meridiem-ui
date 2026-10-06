@@ -182,6 +182,28 @@
       ]
     },
     {
+      "name": "data-table",
+      "type": "registry:component",
+      "title": "Table de données générique",
+      "description": "TanStack Table + shadcn : vos colonnes et vos données, recherche, tri, pagination, ligne cliquable, état vide, libellés traduisibles, colonnes masquées sur téléphone.",
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDependencies": [
+        "table",
+        "button",
+        "input-group",
+        "card",
+        "https://raw.githubusercontent.com/Meridiem-ai/meridiem-ui/main/public/r/brand.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/meridiem/data-table.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "platform",
       "type": "registry:block",
       "title": "Plateforme type",

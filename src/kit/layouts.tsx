@@ -22,6 +22,9 @@ import { Progress } from "@/components/ui/progress"
 import { CityDots, DotChart, DotField, Icon, StatusBadge, type IsoKind } from "@/components/meridiem/brand"
 import { KpiCard } from "@/components/meridiem/kpi-card"
 import { ClientsTable } from "@/components/meridiem/clients-table"
+import { DataTable, SortHeader } from "@/components/meridiem/data-table"
+import { REQUESTS, type Request } from "@/components/meridiem/demo-data"
+import type { ColumnDef } from "@tanstack/react-table"
 import { AutomationRadial, ChannelsStackedChart, DelayLineChart, RequestsAreaChart, TypesBarChart } from "@/components/meridiem/charts"
 import { KitSection, Demo } from "./parts"
 
@@ -213,6 +216,16 @@ export function AnimatedCards() {
   )
 }
 
+const REQUEST_COLUMNS: ColumnDef<Request>[] = [
+  { accessorKey: "title", header: ({ column }) => <SortHeader column={column} label="Demande" />, cell: ({ row }) => <div><div className="font-medium">{row.original.title}</div><div className="text-xs text-muted-foreground">{row.original.id} · {row.original.client}</div></div> },
+  { accessorKey: "type", header: () => <span className="eyebrow">Type</span>, cell: ({ getValue }) => <span className="text-muted-foreground">{getValue<string>()}</span>, meta: { className: "hidden md:table-cell" } },
+  { accessorKey: "amount", header: () => <span className="eyebrow">Montant</span>, cell: ({ getValue }) => <span className="num whitespace-nowrap">{getValue<string>() || "-"}</span>, meta: { className: "text-right" } },
+  { accessorKey: "label", header: () => <span className="eyebrow">Statut</span>, cell: ({ row }) => <StatusBadge status={row.original.status}>{row.original.label}</StatusBadge> },
+]
+function RequestsDataTable() {
+  return <DataTable data={REQUESTS} columns={REQUEST_COLUMNS} pageSize={5} searchText={(r) => r.title + " " + r.client + " " + r.id} labels={{ search: "Client, objet, référence", count: (n) => `${n} demande${n > 1 ? "s" : ""}` }} onRowClick={(r) => toast(r.title, { description: r.client })} />
+}
+
 export function Tables() {
   return (
     <KitSection id="tables" title="Tables" desc="Simple pour lire, de données pour agir : recherche, tri, sélection avec actions groupées, actions par ligne, pagination (TanStack Table).">
@@ -229,6 +242,7 @@ export function Tables() {
         </Card>
       </Demo>
       <Demo label="De données (cochez des lignes, triez, cherchez)" bare><ClientsTable pageSize={5} onNewRequest={() => toast("Nouvelle demande (démo)")} /></Demo>
+      <Demo label="Générique : vos colonnes, vos données (DataTable)" bare><RequestsDataTable /></Demo>
     </KitSection>
   )
 }

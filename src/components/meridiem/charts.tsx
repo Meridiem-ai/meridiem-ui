@@ -1,3 +1,4 @@
+"use client"
 /* Graphiques Olympe : shadcn/ui Chart (Recharts) + règles dataviz (une échelle, traits fins, infobulle, légende dès 2 séries). */
 import { useMemo, useState } from "react"
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, PolarAngleAxis, RadialBar, RadialBarChart, XAxis, YAxis } from "recharts"

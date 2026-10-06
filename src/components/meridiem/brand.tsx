@@ -1,3 +1,4 @@
+"use client"
 /* Briques de marque Meridiem · Olympe
    Ville en points (image du site tramée), champ de points, graphique en points, cartes animées, icônes, statuts. */
 import { useEffect, useRef, useState } from "react"
@@ -243,13 +244,15 @@ export function IsoArt({ kind, active, className }: { kind: IsoKind; active: boo
 }
 
 /* ---------- Statut : une pastille ET un mot, jamais la couleur seule ---------- */
-export type Status = "ok" | "warn" | "wait" | "crit" | "info"
+export type Status = "ok" | "warn" | "wait" | "crit" | "info" | "neutral"
 const STATUS_CLASS: Record<Status, string> = {
   ok: "text-ok bg-ok/8 border-ok/20",
   warn: "text-warn bg-warn/8 border-warn/20",
   wait: "text-wait bg-wait/8 border-wait/20",
   crit: "text-crit bg-crit/8 border-crit/20",
   info: "text-info bg-info/8 border-info/20",
+  /* Neutre : clos, retiré, sans suite (refusé, annulé, terminé). Le mot porte l'information. */
+  neutral: "text-muted-foreground bg-muted border-border",
 }
 export function StatusBadge({ status, children, className }: { status: Status; children: React.ReactNode; className?: string }) {
   return (

@@ -1,3 +1,4 @@
+"use client"
 /* Plateforme métier type : coquille (sidebar, en-tête, palette de commandes, notifications, menu du compte) et navigation entre pages. */
 import { useEffect, useState } from "react"
 import {
@@ -19,7 +20,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/components/ui/command"
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/components/ui/command"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -253,6 +254,8 @@ export default function Platform() {
 
       {/* Palette de commandes (⌘K) */}
       <CommandDialog open={cmdOpen} onOpenChange={setCmdOpen} title="Rechercher" description="Aller à une page ou lancer une action">
+        {/* cmdk exige son conteneur <Command> : CommandDialog (shadcn actuel) ne le pose plus. */}
+        <Command>
         <CommandInput placeholder="Rechercher une page, un client, une action" />
         <CommandList>
           <CommandEmpty>Aucun résultat.</CommandEmpty>
@@ -270,6 +273,7 @@ export default function Platform() {
             {CLIENTS.slice(0, 5).map((c) => <CommandItem key={c.id} onSelect={() => go("clients")}><Icon icon={Building03Icon} />{c.name}<span className="ml-auto text-xs text-muted-foreground">{c.city}</span></CommandItem>)}
           </CommandGroup>
         </CommandList>
+        </Command>
       </CommandDialog>
 
       <NewRequestDialog open={newOpen} onOpenChange={setNewOpen} nextId={"D-" + (2612 + rows.length - REQUESTS.length)} onCreate={createRequest} />

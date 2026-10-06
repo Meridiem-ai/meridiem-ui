@@ -1,3 +1,4 @@
+"use client"
 /* Clients : indicateurs + table de données. */
 import { Add01Icon } from "@hugeicons/core-free-icons"
 import { Button } from "@/components/ui/button"

@@ -1,3 +1,4 @@
+"use client"
 /* Réglages (ouverts depuis le menu du compte) : profil, notifications, équipe. */
 import { useState } from "react"
 import { Add01Icon } from "@hugeicons/core-free-icons"

@@ -1,3 +1,4 @@
+"use client"
 /* Micro landing Meridiem : héros sur la ville en points (comme le site actuel), quatre cartes, bloc final, prise de rendez-vous. */
 import { useState } from "react"
 import { Globe02Icon, SecurityCheckIcon, ServerStack01Icon, Key01Icon, Mail01Icon, File01Icon, InboxIcon, Invoice01Icon, Calendar03Icon, Tick02Icon } from "@hugeicons/core-free-icons"
